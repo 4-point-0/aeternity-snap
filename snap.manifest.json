@@ -4,7 +4,7 @@
   "proposedName": "Aeternity Wallet",
   "repository": {
     "type": "git",
-    "url": "https://github.com/4pto/eternity-snap.git"
+    "url": "https://github.com/4pto/aeternity-snap.git"
   },
   "source": {
     "shasum": "x7B4oiwn6Dk+tzDPQsXNoe+6icmxqo8r2k8DjZgoSqM=",
@@ -26,11 +26,7 @@
     },
     "snap_getBip32Entropy": [
       {
-        "path": [
-          "m",
-          "44'",
-          "457'"
-        ],
+        "path": ["m", "44'", "457'"],
         "curve": "ed25519"
       }
     ]
