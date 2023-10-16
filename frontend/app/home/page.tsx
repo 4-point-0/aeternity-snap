@@ -1,15 +1,6 @@
 "use client";
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-  Button,
-} from "@nextui-org/react";
+import { Card, Button } from "@nextui-org/react";
 
 export const Home = () => {
   return (
