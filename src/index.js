@@ -19,14 +19,6 @@ import {
 } from "./ui";
 
 module.exports.onRpcRequest = async ({ origin, request }) => {
-  // if (
-  //   !origin ||
-  //   (!origin.match(/^https:\/\/(?:\S+\.)?4pto\.com$/) &&
-  //     !origin.match(/^https:\/\/(?:\S+\.)?4pto\.dev$/))
-  // ) {
-  //   throw new Error("Invalid origin");
-  // }
-
   const dappOrigin = request?.params?.origin || origin;
   const dappHost = new URL(dappOrigin)?.host;
 
