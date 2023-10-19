@@ -31,6 +31,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
           variant="light"
           aria-label="Light mode"
           onPress={onChange}
+          size="sm"
         >
           {theme === "light" ? <Moon size={22} /> : <Sun size={22} />}
         </Button>
