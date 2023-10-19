@@ -7,7 +7,7 @@
     "url": "https://github.com/4-point-0/aeternity-snap.git"
   },
   "source": {
-    "shasum": "8pUs5BcUgQTF2/cmKeBJzM9rS4qABiypIXK2poGzxZw=",
+    "shasum": "GuhZe3IJ2fU1QKs0vqht4sDT5DOGa7WgV+cEufyQPhk=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -26,11 +26,7 @@
     },
     "snap_getBip32Entropy": [
       {
-        "path": [
-          "m",
-          "44'",
-          "457'"
-        ],
+        "path": ["m", "44'", "457'"],
         "curve": "ed25519"
       }
     ]

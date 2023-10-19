@@ -1,8 +1,29 @@
 "use client";
 import React from "react";
 import { Card, Button } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
 export const Home = () => {
+  // const router = useRouter();
+  const snapId = `local:${"http://localhost:8080"}`;
+
+  console.log(window.location.href);
+
+  const connectAccount = async () => {
+    try {
+      const response = await ethereum.request({
+        method: "wallet_requestSnaps",
+        params: { [snapId]: {} },
+      });
+      console.log(response);
+      alert("Successfull connection: " + response);
+      // router.push("/dashboard");
+    } catch (err: any) {
+      console.error(err);
+      alert("Problem happened: " + err.message || err);
+    }
+  };
+
   return (
     <div className="">
       <div className="mt-[10%] flex items-center justify-center">
@@ -39,6 +60,7 @@ export const Home = () => {
               className="w-[50%] sm:w-[80%] font-bold text-red-600"
               color="primary"
               variant="faded"
+              onClick={connectAccount}
             >
               <img className="w-[8%]" src="images/metamask-icon.png" />
               Connect with MetaMask

@@ -18,14 +18,14 @@ export const Dashboard = () => {
               <div className="">
                 <p className="font-bold mb-4 text-lg">Balance</p>
                 <div className="flex">
-                  <p>0</p>
+                  <p>350.23324</p>
                   <img
                     src="images/aeternity-logo-icon.png"
                     alt=""
                     className="w-[10%] object-scale-down ml-2"
                   />
                 </div>
-                <p>0 $</p>
+                <p>7.120 $</p>
               </div>
               <div className="flex mt-12 gap-2">
                 <Button
