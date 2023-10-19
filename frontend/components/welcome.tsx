@@ -1,28 +1,9 @@
 "use client";
-import React from "react";
-import { Card, Button } from "@nextui-org/react";
-import { useRouter } from "next/router";
+import { useMetamask } from "@/context/metamask";
+import { Button, Card, Image } from "@nextui-org/react";
 
-export const Home = () => {
-  // const router = useRouter();
-  const snapId = `local:${"http://localhost:8080"}`;
-
-  console.log(window.location.href);
-
-  const connectAccount = async () => {
-    try {
-      const response = await ethereum.request({
-        method: "wallet_requestSnaps",
-        params: { [snapId]: {} },
-      });
-      console.log(response);
-      alert("Successfull connection: " + response);
-      // router.push("/dashboard");
-    } catch (err: any) {
-      console.error(err);
-      alert("Problem happened: " + err.message || err);
-    }
-  };
+const Welcome = () => {
+  const { connectAccount } = useMetamask();
 
   return (
     <div className="">
@@ -30,22 +11,10 @@ export const Home = () => {
         <div className="w-2/5">
           <Card className="mt-7 items-center gap-6 drop-shadow-md p-10">
             <div className="text-center">
-              <div className="flex justify-center space-x-5">
-                <img
-                  src="images/aeternity-logo-icon.png"
-                  alt=""
-                  className="w-[13%] object-scale-down"
-                />
-                <img
-                  src="images/icon-x.png"
-                  alt=""
-                  className="object-scale-down w-[5%]"
-                />
-                <img
-                  src="images/metamask-icon.png"
-                  alt=""
-                  className="w-[13%] object-scale-down"
-                />
+              <div className="flex justify-between items-center">
+                <Image width={80} src="images/aeternity-logo-icon.png" alt="" />
+                <Image width={30} src="images/icon-x.png" alt="" />
+                <Image width={80} src="images/metamask-icon.png" alt="" />
               </div>
               <h1 className="mt-5 mb-5 text-2xl font-bold">
                 Aeternity Wallet Explorer, <br />
@@ -57,13 +26,14 @@ export const Home = () => {
               </p>
             </div>
             <Button
-              className="w-[50%] sm:w-[80%] font-bold text-red-600"
               color="primary"
               variant="faded"
               onClick={connectAccount}
+              startContent={
+                <Image width={30} alt="" src="images/metamask-icon.png" />
+              }
             >
-              <img className="w-[8%]" src="images/metamask-icon.png" />
-              Connect with MetaMask
+              <p className="text-red-400">Connect with MetaMask</p>
             </Button>
           </Card>
         </div>
@@ -82,7 +52,7 @@ export const Home = () => {
         </a>
         <div className="border-l-small"></div>
         <a href="" className="text-sm text-gray-500">
-          FAQ's
+          FAQ&rsquo;s
         </a>
       </div>
       <div className="mt-[3%] flex justify-center">
@@ -99,4 +69,4 @@ export const Home = () => {
   );
 };
 
-export default Home;
+export default Welcome;
