@@ -1,6 +1,6 @@
 {
   "name": "aeternity-snap",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Aeternity metamask snap.",
   "main": "src/index.js",
   "scripts": {
@@ -8,14 +8,14 @@
     "build": "mm-snap build",
     "deploy": "npm run build && npm publish"
   },
-  "homepage": "https://github.com/4pto/aeternity-snap",
+  "homepage": "https://github.com/4-point-0/aeternity-snap",
   "author": "4pto Developers <dev@4pto.io>",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/4pto/aeternity-snap.git"
+    "url": "https://github.com/4-point-0/aeternity-snap.git"
   },
-  "bugs": "https://github.com/4pto/aeternity-snap/issues",
+  "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
   "files": [
     "dist/",
     "logo.svg",
