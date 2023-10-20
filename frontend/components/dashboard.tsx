@@ -5,13 +5,6 @@ import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const data = [
-  { date: "20.08.2023", amount: "25.234", price: "25" },
-  { date: "25.08.2023", amount: "13.332", price: "23" },
-  { date: "10.10.2023", amount: "16.234", price: "30" },
-  { date: "20.10.2023", amount: "18.342", price: "35" },
-];
-
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
