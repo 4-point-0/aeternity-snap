@@ -1,7 +1,20 @@
 "use client";
 import { useMetamask } from "@/context/metamask";
 import { shortenHash } from "@/lib/utils";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Encoding, Tag, encode } from "@aeternity/aepp-sdk";
+import {
+  Button,
+  Card,
+  CardBody,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,7 +24,9 @@ let USDollar = new Intl.NumberFormat("en-US", {
 });
 
 const Dashboard = () => {
-  const { address } = useMetamask();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const { address, signMessage, signTransaction } = useMetamask();
 
   const [addressBalance, setAddressBalance] = useState(0);
   const [usdBalance, setUsdBalance] = useState(0);
@@ -115,7 +130,7 @@ const Dashboard = () => {
                 >
                   Get from faucet
                 </Button>
-                <Button size="sm" className="font-bold">
+                <Button size="sm" className="font-bold" onPress={onOpen}>
                   Send
                 </Button>
               </div>
@@ -157,6 +172,37 @@ const Dashboard = () => {
                   account won&rsquo;t be visible in your MetaMask browser
                   extension.
                 </p>
+              </div>
+              <div className="flex justify-center mt-4">
+                <Button
+                  size="sm"
+                  className="font-bold"
+                  onPress={async () => {
+                    const r = await signMessage();
+                    toast.success(JSON.stringify(r));
+                  }}
+                >
+                  Sign Message
+                </Button>
+                <Button
+                  size="sm"
+                  className="font-bold ml-4"
+                  onPress={async () => {
+                    const r = await signTransaction({
+                      tag: Tag.SpendTx,
+                      senderId: address,
+                      recipientId: `ak_2GnfDgo6mEtqhhsFaRHCw1UUkcCmKD7NBb7kbDU8kVUdDRuhSy`,
+                      amount: 0.1 * 10 ** 18,
+                      payload: encode(
+                        new TextEncoder().encode(""),
+                        Encoding.Bytearray
+                      ),
+                    });
+                    toast.success(JSON.stringify(r));
+                  }}
+                >
+                  Sign Transaction
+                </Button>
               </div>
             </div>
           </CardBody>
@@ -240,6 +286,54 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Send Tokens
+              </ModalHeader>
+              <ModalBody>
+                <Input
+                  type="text"
+                  label="Aeternity Address"
+                  placeholder="Enter aeternity address"
+                  labelPlacement="outside"
+                />
+                <Input
+                  type="number"
+                  label="Amount"
+                  placeholder="0.00"
+                  labelPlacement="outside"
+                  startContent={
+                    <div className="pointer-events-none flex items-center">
+                      <Image
+                        src="images/aeternity-logo-icon.png"
+                        alt=""
+                        width={20}
+                      />
+                    </div>
+                  }
+                />
+
+                <Button
+                  color="success"
+                  variant="flat"
+                  className="mt-4"
+                  onPress={onClose}
+                >
+                  Send
+                </Button>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

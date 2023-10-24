@@ -1,8 +1,12 @@
+import { AeSdk, Node } from "@aeternity/aepp-sdk";
+import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import React, { useContext } from "react";
 
 interface MetamaskContext {
   connectAccount: () => void;
   disconnectAccount: () => void;
+  signMessage: () => Promise<any>;
+  signTransaction: (payload: any) => Promise<any>;
   address: string | null;
 }
 
@@ -10,6 +14,12 @@ const MetamaskContext = React.createContext<MetamaskContext | null>(null);
 
 export const MetamaskProvider = ({ children }: any) => {
   const snapId = `local:${"http://localhost:8080"}`;
+
+  const node = new Node("https://testnet.aeternity.io");
+
+  const aeSdk = new AeSdk({
+    nodes: [{ name: "testnet", instance: node }],
+  });
 
   const [address, setAddress] = React.useState<string | null>(null);
 
@@ -75,6 +85,59 @@ export const MetamaskProvider = ({ children }: any) => {
     }
   }
 
+  async function signMessage() {
+    try {
+      const response = await (window as any).ethereum.request({
+        method: "wallet_invokeSnap",
+        params: {
+          snapId,
+          request: {
+            method: "signMessage",
+            params: {
+              derivationPath: [`0'`, `0'`, `0'`],
+              message: "QWV0ZXJuaXR5IG1lc3NhZ2Ugc2lnbmluZyE=",
+            },
+          },
+        },
+      });
+      console.log(response);
+      return response;
+    } catch (err) {
+      console.error(err);
+      alert("Problem happened: " + (err as any).message || err);
+    }
+  }
+
+  async function signTransaction(payload: TxParamsAsync) {
+    const tx = await aeSdk.buildTx(payload);
+
+    try {
+      const response = await (window as any).ethereum.request({
+        method: "wallet_invokeSnap",
+        params: {
+          snapId,
+          request: {
+            method: "signTransaction",
+            params: {
+              derivationPath: [`0'`, `0'`, `0'`],
+              message: btoa(tx),
+            },
+          },
+        },
+      });
+      console.log(response);
+
+      const { txHash } = await aeSdk.api.postTransaction({
+        tx: response.signature,
+      });
+
+      return txHash;
+    } catch (err) {
+      console.error(err);
+      alert("Problem happened: " + (err as any).message || err);
+    }
+  }
+
   const disconnectAccount = async () => {
     setAddress(null);
   };
@@ -85,6 +148,8 @@ export const MetamaskProvider = ({ children }: any) => {
         connectAccount,
         disconnectAccount,
         address,
+        signMessage,
+        signTransaction,
       }}
     >
       {children}

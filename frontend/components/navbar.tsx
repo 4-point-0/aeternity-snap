@@ -18,7 +18,6 @@ import {
   Snippet,
 } from "@nextui-org/react";
 import { SignOut } from "@phosphor-icons/react";
-import NextLink from "next/link";
 import { ImQrcode } from "react-icons/im";
 import QRCode from "react-qr-code";
 import { useTheme } from "next-themes";
@@ -33,7 +32,7 @@ export const Navbar = () => {
     <NextUINavbar maxWidth="xl" position="static" className="md:rounded-lg">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
+          <div className="flex justify-start items-center gap-1">
             <Image
               width={150}
               src={
@@ -43,7 +42,7 @@ export const Navbar = () => {
               }
               alt="aeternity"
             />
-          </NextLink>
+          </div>
         </NavbarBrand>
       </NavbarContent>
 
