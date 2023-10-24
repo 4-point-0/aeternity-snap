@@ -21,9 +21,13 @@ import { SignOut } from "@phosphor-icons/react";
 import NextLink from "next/link";
 import { ImQrcode } from "react-icons/im";
 import QRCode from "react-qr-code";
+import { useTheme } from "next-themes";
 
 export const Navbar = () => {
   const { address, disconnectAccount } = useMetamask();
+  const { theme } = useTheme();
+
+  console.log(theme);
 
   return (
     <NextUINavbar maxWidth="xl" position="static" className="md:rounded-lg">
@@ -32,7 +36,11 @@ export const Navbar = () => {
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Image
               width={150}
-              src="/images/aeternity-logo-dark.png"
+              src={
+                theme === "dark"
+                  ? "/images/aeternity-logo-light.png"
+                  : "/images/aeternity-logo-dark.png"
+              }
               alt="aeternity"
             />
           </NextLink>
