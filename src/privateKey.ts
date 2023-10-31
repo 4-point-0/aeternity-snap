@@ -2,7 +2,7 @@ import nacl from "tweetnacl";
 import { SLIP10Node } from "@metamask/key-tree";
 import { assertInput, assertIsArray } from "./utils";
 
-const isValidSegment = (segment) => {
+const isValidSegment = (segment: any) => {
   if (typeof segment !== "string") {
     return false;
   }
@@ -20,10 +20,10 @@ const isValidSegment = (segment) => {
   return true;
 };
 
-export const deriveKeyPair = async (path) => {
+export const deriveKeyPair = async (path: any) => {
   assertIsArray(path);
   assertInput(path.length);
-  assertInput(path.every((segment) => isValidSegment(segment)));
+  assertInput(path.every((segment: any) => isValidSegment(segment)));
 
   const rootNode = await snap.request({
     method: "snap_getBip32Entropy",
@@ -35,7 +35,9 @@ export const deriveKeyPair = async (path) => {
 
   const node = await SLIP10Node.fromJSON(rootNode);
 
-  const keypair = await node.derive(path.map((segment) => `slip10:${segment}`));
+  const keypair = await node.derive(
+    path.map((segment: any) => `slip10:${segment}`)
+  );
 
-  return nacl.sign.keyPair.fromSeed(keypair.privateKeyBytes);
+  return nacl.sign.keyPair.fromSeed(keypair.privateKeyBytes!);
 };

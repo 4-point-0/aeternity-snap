@@ -78,6 +78,7 @@
       }
 
       async function signTransaction() {
+        const innerTx = false;
         try {
           const response = await window.ethereum.request({
             method: "wallet_invokeSnap",
@@ -87,7 +88,9 @@
                 method: "signTransaction",
                 params: {
                   derivationPath: [`0'`, `0'`, `0'`],
-                  message: "QWV0ZXJuaXR5IG1lc3NhZ2Ugc2lnbmluZyE=",
+                  tx: "tx_+FkMAaEB9JfNjCydXAFwwcvQhZmaPaUGCwXXd7ViGR2xSh7LXwGhAaeK/JiaztdLyUmg+UdbQqWJJswrOq28mTl9QvmrsyweiAFjRXhdigAAhg9MNiAIAAAQgP/IEf4=",
+                  networkId: "ae_uat",
+                  innerTx,
                 },
               },
             },

@@ -1,6 +1,6 @@
 import { panel, heading, text, copyable, divider } from "@metamask/snaps-ui";
 
-export const renderGetPublicKey = (host, value) => {
+export const renderGetPublicKey = (host: any, value: any) => {
   return snap.request({
     method: "snap_dialog",
     params: {
@@ -15,7 +15,7 @@ export const renderGetPublicKey = (host, value) => {
   });
 };
 
-export const renderSignTransaction = (host, message) => {
+export const renderSignTransaction = (host: any, message: any) => {
   return snap.request({
     method: "snap_dialog",
     params: {
@@ -30,7 +30,7 @@ export const renderSignTransaction = (host, message) => {
   });
 };
 
-export const renderSignMessage = (host, message) => {
+export const renderSignMessage = (host: any, message: any) => {
   return snap.request({
     method: "snap_dialog",
     params: {

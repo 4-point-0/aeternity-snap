@@ -1,4 +1,3 @@
-import { blake2b } from "blakejs/blake2b.js";
 import base64js from "base64-js";
 import { deriveKeyPair } from "./privateKey";
 import {
@@ -10,15 +9,11 @@ import {
   signMessage,
   verifyMessage,
   assertIsVerifiedMessage,
-  sign,
+  signTransaction,
 } from "./utils";
-import {
-  renderGetPublicKey,
-  renderSignMessage,
-  renderSignTransaction,
-} from "./ui";
+import { renderGetPublicKey, renderSignMessage } from "./ui";
 
-module.exports.onRpcRequest = async ({ origin, request }) => {
+module.exports.onRpcRequest = async ({ origin, request }: any) => {
   const dappOrigin = request?.params?.origin || origin;
   const dappHost = new URL(dappOrigin)?.host;
 
@@ -44,7 +39,7 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
 
     case "signMessage": {
       const { derivationPath, message } = request.params || {};
-
+      console.log("signMessage", "tu sam signMessage");
       assertInput(message);
       assertIsString(message);
 
@@ -74,22 +69,19 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
     }
 
     case "signTransaction": {
-      const { derivationPath, message } = request.params || {};
-
-      assertInput(message);
-      assertIsString(message);
+      const { derivationPath, tx, networkId, isInnerTx } = request.params || {};
 
       const keyPair = await deriveKeyPair(derivationPath);
+      const options = { privateKey: keyPair.secretKey };
+      const signedTx = signTransaction(tx, {
+        innerTx: isInnerTx,
+        networkId: networkId,
+        ...options,
+      });
 
-      const accepted = await renderSignTransaction(dappHost, message);
-      assertConfirmation(accepted);
-
-      const messageBytes = base64js.toByteArray(message);
-      const hashedMessage = blake2b(messageBytes, { dkLen: 32 });
-      const signature = sign(hashedMessage, keyPair.secretKey);
       return {
         publicKey: encodePublicKey(keyPair.publicKey),
-        signature: base64js.fromByteArray(signature),
+        signedTx: signedTx,
       };
     }
 
