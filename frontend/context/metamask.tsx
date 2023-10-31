@@ -1,4 +1,4 @@
-import { AeSdk, Node } from "@aeternity/aepp-sdk";
+import { AeSdk, MemoryAccount, Node } from "@aeternity/aepp-sdk";
 import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import React, { useContext } from "react";
 
@@ -19,6 +19,7 @@ export const MetamaskProvider = ({ children }: any) => {
 
   const aeSdk = new AeSdk({
     nodes: [{ name: "testnet", instance: node }],
+    accounts: [new MemoryAccount("PRIVATE-KEY")],
   });
 
   const [address, setAddress] = React.useState<string | null>(null);
@@ -110,7 +111,8 @@ export const MetamaskProvider = ({ children }: any) => {
 
   async function signTransaction(payload: TxParamsAsync) {
     const tx = await aeSdk.buildTx(payload);
-
+    const innerTx = false;
+    const networkId = "ae_uat";
     try {
       const response = await (window as any).ethereum.request({
         method: "wallet_invokeSnap",
@@ -120,15 +122,17 @@ export const MetamaskProvider = ({ children }: any) => {
             method: "signTransaction",
             params: {
               derivationPath: [`0'`, `0'`, `0'`],
-              message: btoa(tx),
+              tx: tx,
+              networkId: networkId,
+              innerTx,
             },
           },
         },
       });
-      console.log(response);
 
+      const result = await aeSdk.signTransaction(response.signedTx);
       const { txHash } = await aeSdk.api.postTransaction({
-        tx: response.signature,
+        tx: result,
       });
 
       return txHash;
