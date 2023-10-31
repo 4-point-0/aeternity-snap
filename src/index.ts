@@ -39,7 +39,6 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
     case "signMessage": {
       const { derivationPath, message } = request.params || {};
-      console.log("signMessage", "tu sam signMessage");
       assertInput(message);
       assertIsString(message);
 
