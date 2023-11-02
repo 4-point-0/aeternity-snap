@@ -1,17 +1,17 @@
 import base64js from "base64-js";
 import { deriveKeyPair } from "./privateKey";
+import { renderGetPublicKey, renderSignMessage } from "./ui";
 import {
-  assertInput,
   assertConfirmation,
-  assertIsString,
+  assertInput,
   assertIsBoolean,
+  assertIsString,
+  assertIsVerifiedMessage,
   encodePublicKey,
   signMessage,
-  verifyMessage,
-  assertIsVerifiedMessage,
   signTransaction,
+  verifyMessage,
 } from "./utils";
-import { renderGetPublicKey, renderSignMessage } from "./ui";
 
 module.exports.onRpcRequest = async ({ origin, request }: any) => {
   const dappOrigin = request?.params?.origin || origin;
@@ -34,7 +34,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
         assertConfirmation(accepted);
       }
 
-      return pubkey;
+      return { pubkey };
     }
 
     case "signMessage": {

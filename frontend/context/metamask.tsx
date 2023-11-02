@@ -1,4 +1,4 @@
-import { AeSdk, MemoryAccount, Node } from "@aeternity/aepp-sdk";
+import { AeSdk, Node } from "@aeternity/aepp-sdk";
 import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import React, { useContext } from "react";
 
@@ -19,7 +19,7 @@ export const MetamaskProvider = ({ children }: any) => {
 
   const aeSdk = new AeSdk({
     nodes: [{ name: "testnet", instance: node }],
-    accounts: [new MemoryAccount("PRIVATE-KEY")],
+    accounts: [],
   });
 
   const [address, setAddress] = React.useState<string | null>(null);
@@ -48,7 +48,7 @@ export const MetamaskProvider = ({ children }: any) => {
     const snap = await getSnap(snapId);
 
     if (snap) {
-      getPubkey();
+      await getPubkey();
       return;
     }
 
@@ -57,7 +57,7 @@ export const MetamaskProvider = ({ children }: any) => {
         method: "wallet_requestSnaps",
         params: { [snapId]: {} },
       });
-      getPubkey();
+      await getPubkey();
     } catch (err: any) {
       console.error(err);
       alert("Problem happened: " + err.message || err);
@@ -79,7 +79,7 @@ export const MetamaskProvider = ({ children }: any) => {
           },
         },
       });
-      setAddress(response);
+      setAddress(response.pubkey);
     } catch (err) {
       console.error(err);
       alert("Problem happened: " + (err as any).message || err);
@@ -101,7 +101,6 @@ export const MetamaskProvider = ({ children }: any) => {
           },
         },
       });
-      console.log(response);
       return response;
     } catch (err) {
       console.error(err);
@@ -130,9 +129,8 @@ export const MetamaskProvider = ({ children }: any) => {
         },
       });
 
-      const result = await aeSdk.signTransaction(response.signedTx);
       const { txHash } = await aeSdk.api.postTransaction({
-        tx: result,
+        tx: response.signedTx,
       });
 
       return txHash;

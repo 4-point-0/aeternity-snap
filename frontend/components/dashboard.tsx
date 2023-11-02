@@ -32,6 +32,9 @@ const Dashboard = () => {
   const [usdBalance, setUsdBalance] = useState(0);
   const [activities, setActivities] = useState([]);
 
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
+
   useEffect(() => {
     getBalance();
     getActivities();
@@ -100,6 +103,44 @@ const Dashboard = () => {
     });
 
     setActivities(actions);
+  };
+
+  const onSend = async () => {
+    if (!recipient || recipient === "") {
+      toast.error("Recipient is required");
+      return;
+    }
+
+    if (!amount || amount === "") {
+      toast.error("Amount is required");
+      return;
+    }
+
+    const amountNum = parseFloat(amount);
+
+    if (Number.isNaN(amountNum)) {
+      toast.error("Amount must be a number");
+      return;
+    }
+
+    if (amountNum <= 0) {
+      toast.error("Amount must be greater than 0");
+      return;
+    }
+
+    if (amountNum > addressBalance) {
+      toast.error("Amount must be less than your balance");
+      return;
+    }
+
+    const txHash = await signTransaction({
+      tag: Tag.SpendTx,
+      senderId: address,
+      recipientId: recipient,
+      amount: amountNum * 10 ** 18,
+      payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
+    });
+    toast.success(txHash);
   };
 
   return (
@@ -183,25 +224,6 @@ const Dashboard = () => {
                   }}
                 >
                   Sign Message
-                </Button>
-                <Button
-                  size="sm"
-                  className="font-bold ml-4"
-                  onPress={async () => {
-                    const r = await signTransaction({
-                      tag: Tag.SpendTx,
-                      senderId: address,
-                      recipientId: `ak_2GnfDgo6mEtqhhsFaRHCw1UUkcCmKD7NBb7kbDU8kVUdDRuhSy`,
-                      amount: 0.1 * 10 ** 18,
-                      payload: encode(
-                        new TextEncoder().encode(""),
-                        Encoding.Bytearray
-                      ),
-                    });
-                    toast.success(JSON.stringify(r));
-                  }}
-                >
-                  Sign Transaction
                 </Button>
               </div>
             </div>
@@ -299,6 +321,8 @@ const Dashboard = () => {
                   label="Aeternity Address"
                   placeholder="Enter aeternity address"
                   labelPlacement="outside"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
                 />
                 <Input
                   type="number"
@@ -314,13 +338,15 @@ const Dashboard = () => {
                       />
                     </div>
                   }
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                 />
 
                 <Button
                   color="success"
                   variant="flat"
                   className="mt-4"
-                  onPress={onClose}
+                  onPress={onSend}
                 >
                   Send
                 </Button>
