@@ -7,12 +7,12 @@
     "url": "https://github.com/4-point-0/aeternity-snap.git"
   },
   "source": {
-    "shasum": "n5eATTKYgwnou1/lOvMLRs8paiKUh8JIJ3cHLn2pccQ=",
+    "shasum": "S5ApY5SNAofukoPICR+tPaQ50LYtjfI7xGZqGEyLsK4=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "logo.svg",
-        "packageName": "aeternity-snap",
+        "packageName": "@aeternity-snap/plugin",
         "registry": "https://registry.npmjs.org/"
       }
     }

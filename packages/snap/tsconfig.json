@@ -3,14 +3,13 @@
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "module": "CommonJS",
     "moduleResolution": "node",
     "useUnknownInCatchVariables": false,
-    "jsx": "preserve",
     "sourceMap": true,
     "strict": true,
-    "target": "ES2021"
+    "target": "ES2017"
   },
+  "include": ["src"],
   "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
 }
