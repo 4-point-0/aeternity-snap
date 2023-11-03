@@ -11,6 +11,10 @@ import {
 import {
   Button,
   Card,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Image,
   Popover,
   PopoverContent,
@@ -19,14 +23,22 @@ import {
 } from "@nextui-org/react";
 import { SignOut } from "@phosphor-icons/react";
 import { ImQrcode } from "react-icons/im";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import QRCode from "react-qr-code";
 import { useTheme } from "next-themes";
+import { useMemo, useState } from "react";
 
 export const Navbar = () => {
   const { address, disconnectAccount } = useMetamask();
   const { theme } = useTheme();
+  const { changeOperationalNetwork } = useMetamask();
 
-  console.log(theme);
+  const [selectedKeys, setSelectedKeys] = useState<any>(new Set(["Testnet"]));
+
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
 
   return (
     <NextUINavbar maxWidth="xl" position="static" className="md:rounded-lg">
@@ -78,6 +90,33 @@ export const Navbar = () => {
                 )}
               </PopoverContent>
             </Popover>
+          )}
+
+          {address && (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="solid"
+                  className="capitalize"
+                  onClick={changeOperationalNetwork(
+                    selectedValue.toLowerCase()
+                  )}
+                >
+                  {selectedValue} <MdKeyboardArrowDown />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Single selection example"
+                variant="flat"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={selectedKeys}
+                onSelectionChange={setSelectedKeys}
+              >
+                <DropdownItem key="Mainnet">Mainnet</DropdownItem>
+                <DropdownItem key="Testnet">Testnet</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           )}
 
           {address && (

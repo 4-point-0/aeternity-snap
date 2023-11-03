@@ -76,6 +76,7 @@ node_modules/
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+<<<<<<< Updated upstream
 
 # dependencies
 /node_modules
@@ -132,3 +133,6 @@ yarn-error.log*
 
 .env
 .next
+=======
+.next
+>>>>>>> Stashed changes

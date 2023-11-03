@@ -9986,6 +9986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
 "log-symbols@npm:^4.1.0":
   version: 4.1.0
   resolution: "log-symbols@npm:4.1.0"
@@ -12019,6 +12026,7 @@ __metadata:
     eslint-config-next: 13.4.19
     framer-motion: ^10.16.2
     intl-messageformat: ^10.5.0
+    lodash: ^4.17.21
     next: ^13.5.6
     next-themes: ^0.2.1
     node-loader: ^2.0.0

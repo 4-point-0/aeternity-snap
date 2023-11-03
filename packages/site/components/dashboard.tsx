@@ -1,7 +1,7 @@
-"use client";
-import { useMetamask } from "@/context/metamask";
-import { shortenHash } from "@/lib/utils";
-import { Encoding, Tag, encode } from "@aeternity/aepp-sdk";
+'use client';
+import { useMetamask } from '@/context/metamask';
+import { shortenHash } from '@/lib/utils';
+import { Encoding, Tag, encode } from '@aeternity/aepp-sdk';
 import {
   Button,
   Card,
@@ -14,26 +14,58 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+} from '@nextui-org/react';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import debounce from 'lodash/debounce';
 
-let USDollar = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
+let USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
 });
 
 const Dashboard = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const { address, signMessage, signTransaction } = useMetamask();
+  const { address, signMessage, signTransaction, currentOperationalNetwork } =
+    useMetamask();
+
+  const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
+
+  const checkWallet = async (address: string) => {
+    try {
+      const response = await fetch(
+        `https://${currentOperationalNetwork}.aeternity.io/v3/accounts/${address}?int-as-string=false`,
+      );
+
+      if (!response.ok) {
+        setIsValidWalletId(false);
+        throw new Error('Failed to fetch data');
+      }
+
+      if (await response.json()) {
+        setIsValidWalletId(true);
+        console.log(isValidWalletId);
+      }
+    } catch (err) {
+      setIsValidWalletId(false);
+      console.log(err);
+    }
+  };
+
+  const debounceHandleSearch = useCallback(debounce(checkWallet, 2000), []);
+
+  const handelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const address = e.target.value;
+    debounceHandleSearch(address);
+  };
 
   const [addressBalance, setAddressBalance] = useState(0);
   const [usdBalance, setUsdBalance] = useState(0);
   const [activities, setActivities] = useState([]);
 
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
 
   useEffect(() => {
     getBalance();
@@ -42,7 +74,7 @@ const Dashboard = () => {
 
   const getBalance = async () => {
     const response = await fetch(
-      `https://testnet.aeternity.io/v3/accounts/${address}?int-as-string=false`
+      `https://${currentOperationalNetwork}.aeternity.io/v3/accounts/${address}?int-as-string=false`,
     );
 
     const { balance } = await response.json();
@@ -51,7 +83,7 @@ const Dashboard = () => {
     setAddressBalance(humanReadableBalance);
 
     const coingeckoResponse = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=aeternity&vs_currencies=usd"
+      'https://api.coingecko.com/api/v3/simple/price?ids=aeternity&vs_currencies=usd',
     );
 
     const { aeternity } = await coingeckoResponse.json();
@@ -63,8 +95,8 @@ const Dashboard = () => {
     const response = await fetch(
       `https://faucet.aepps.com/account/${address}`,
       {
-        method: "POST",
-      }
+        method: 'POST',
+      },
     );
 
     const data = await response.json();
@@ -81,7 +113,7 @@ const Dashboard = () => {
 
   const getActivities = async () => {
     const response = await fetch(
-      `https://testnet.aeternity.io/mdw/v2/accounts/${address}/activities`
+      `https://${currentOperationalNetwork}.aeternity.io/mdw/v2/accounts/${address}/activities`,
     );
 
     const { data } = await response.json();
@@ -106,30 +138,30 @@ const Dashboard = () => {
   };
 
   const onSend = async () => {
-    if (!recipient || recipient === "") {
-      toast.error("Recipient is required");
+    if (!recipient || recipient === '') {
+      toast.error('Recipient is required');
       return;
     }
 
-    if (!amount || amount === "") {
-      toast.error("Amount is required");
+    if (!amount || amount === '') {
+      toast.error('Amount is required');
       return;
     }
 
     const amountNum = parseFloat(amount);
 
     if (Number.isNaN(amountNum)) {
-      toast.error("Amount must be a number");
+      toast.error('Amount must be a number');
       return;
     }
 
     if (amountNum <= 0) {
-      toast.error("Amount must be greater than 0");
+      toast.error('Amount must be greater than 0');
       return;
     }
 
     if (amountNum > addressBalance) {
-      toast.error("Amount must be less than your balance");
+      toast.error('Amount must be less than your balance');
       return;
     }
 
@@ -138,7 +170,7 @@ const Dashboard = () => {
       senderId: address,
       recipientId: recipient,
       amount: amountNum * 10 ** 18,
-      payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
+      payload: encode(new TextEncoder().encode(''), Encoding.Bytearray),
     });
     toast.success(txHash);
   };
@@ -163,14 +195,16 @@ const Dashboard = () => {
                 <p>{USDollar.format(usdBalance)}</p>
               </div>
               <div className="flex mt-12 gap-2">
-                <Button
-                  size="sm"
-                  variant="bordered"
-                  className="bg-white-100 font-bold"
-                  onPress={getFromFaucet}
-                >
-                  Get from faucet
-                </Button>
+                {currentOperationalNetwork === 'testnet' ? (
+                  <Button
+                    size="sm"
+                    variant="bordered"
+                    className="bg-white-100 font-bold"
+                    onPress={getFromFaucet}
+                  >
+                    Get from faucet
+                  </Button>
+                ) : null}
                 <Button size="sm" className="font-bold" onPress={onOpen}>
                   Send
                 </Button>
@@ -308,7 +342,7 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -321,8 +355,15 @@ const Dashboard = () => {
                   label="Aeternity Address"
                   placeholder="Enter aeternity address"
                   labelPlacement="outside"
-                  value={recipient}
-                  onChange={(e) => setRecipient(e.target.value)}
+                  isInvalid={isValidWalletId ? false : true}
+                  errorMessage={
+                    isValidWalletId
+                      ? null
+                      : 'Please enter a valid wallet address'
+                  }
+                  onChange={(e) => {
+                    handelInputChange(e);
+                  }}
                 />
                 <Input
                   type="number"
@@ -341,18 +382,36 @@ const Dashboard = () => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
-
-                <Button
-                  color="success"
-                  variant="flat"
-                  className="mt-4"
-                  onPress={onSend}
-                >
-                  Send
-                </Button>
+                {isValidWalletId ? (
+                  <Button
+                    color="success"
+                    variant="flat"
+                    className="mt-4"
+                    onPress={onClose}
+                  >
+                    Send
+                  </Button>
+                ) : (
+                  <Button
+                    color="success"
+                    variant="flat"
+                    className="mt-4"
+                    onPress={onClose}
+                    isDisabled
+                  >
+                    Send
+                  </Button>
+                )}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => {
+                    onClose();
+                    setIsValidWalletId(true);
+                  }}
+                >
                   Close
                 </Button>
               </ModalFooter>
