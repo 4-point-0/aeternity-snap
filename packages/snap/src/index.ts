@@ -29,7 +29,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
       if (confirm) {
         const accepted = await renderGetPublicKey(
           dappHost,
-          "Are you sure you want to get account address?"
+          "Are you sure you want to get account address?",
         );
         assertConfirmation(accepted);
       }
@@ -62,7 +62,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
       assertIsVerifiedMessage(isVerified);
 
       return {
-        publicKey: publicKey,
+        publicKey,
         signature: base64js.fromByteArray(signed),
       };
     }
@@ -74,13 +74,13 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
       const options = { privateKey: keyPair.secretKey };
       const signedTx = signTransaction(tx, {
         innerTx: isInnerTx,
-        networkId: networkId,
+        networkId,
         ...options,
       });
 
       return {
         publicKey: encodePublicKey(keyPair.publicKey),
-        signedTx: signedTx,
+        signedTx,
       };
     }
 

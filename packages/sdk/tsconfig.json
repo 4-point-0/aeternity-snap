@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "alwaysStrict": true,
+    "allowJs": true,
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./build",
+    "declaration": true,
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "module": "CommonJS",
+    "lib": ["ESNext", "dom"],
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/@aeternity/aepp-sdk/src/typings"
+    ],
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src", "index.d.ts"]
+}
