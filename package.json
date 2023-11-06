@@ -4,25 +4,25 @@
   "private": true,
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
-  "author": "4pto Developers <dev@4pto.io>",
+  "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/4-point-0/aeternity-snap.git"
   },
-  "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
   "license": "(MIT-0 OR Apache-2.0)",
+  "author": "4pto Developers <dev@4pto.io>",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "build": "yarn workspaces foreach --parallel --topological --verbose run build",
+    "dev": "yarn workspaces foreach --parallel --interlaced --verbose run dev",
     "install-chrome": "./scripts/install-chrome.sh",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
     "start": "yarn workspaces foreach --parallel --interlaced --verbose run start",
-    "dev": "yarn workspaces foreach --parallel --interlaced --verbose run dev",
     "test": "echo \"TODO\""
   },
   "devDependencies": {
