@@ -24,6 +24,7 @@
   ],
   "packageManager": "yarn@3.2.1",
   "dependencies": {
+    "@azure/core-client": "^1.7.3",
     "@babel/runtime": "^7.21.5",
     "@metamask/key-tree": "^7.0.0",
     "@metamask/snaps-cli": "^3.0.1",
