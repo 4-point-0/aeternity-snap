@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
@@ -34,12 +34,12 @@ export default function RootLayout({
       <body
         className={clsx(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col h-screen">
-            <Navbar />
+            <NavigationBar />
             <main className="container mx-auto max-w-7xl pt-2 px-6 flex-grow">
               {children}
             </main>
