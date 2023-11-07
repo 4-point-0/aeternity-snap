@@ -1,6 +1,10 @@
 import base64js from "base64-js";
 import { deriveKeyPair } from "./privateKey";
-import { renderGetPublicKey, renderSignMessage } from "./ui";
+import {
+  renderGetPublicKey,
+  renderSignMessage,
+  renderSignTransaction,
+} from "./ui";
 import {
   assertConfirmation,
   assertInput,
@@ -69,6 +73,9 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
     case "signTransaction": {
       const { derivationPath, tx, networkId, isInnerTx } = request.params || {};
+
+      const accepted = await renderSignTransaction(dappHost, tx);
+      assertConfirmation(accepted);
 
       const keyPair = await deriveKeyPair(derivationPath);
       const options = { privateKey: keyPair.secretKey };

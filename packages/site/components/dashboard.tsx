@@ -15,9 +15,9 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import debounce from "lodash/debounce";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import debounce from "lodash/debounce";
 
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -25,7 +25,7 @@ let USDollar = new Intl.NumberFormat("en-US", {
 });
 
 const Dashboard = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const { address, signMessage, signTransaction, currentOperationalNetwork } =
     useMetamask();
@@ -41,15 +41,12 @@ const Dashboard = () => {
       if (!response.ok) {
         setIsValidWalletId(false);
         throw new Error("Failed to fetch data");
-      }
-
-      if (await response.json()) {
+      } else {
         setIsValidWalletId(true);
-        console.log(isValidWalletId);
+        setRecipient(address);
       }
     } catch (err) {
       setIsValidWalletId(false);
-      console.log(err);
     }
   };
 
@@ -107,8 +104,10 @@ const Dashboard = () => {
       toast.success(`You received 5 AE`);
     }
 
-    getBalance();
-    getActivities();
+    setTimeout(() => {
+      getBalance();
+      getActivities();
+    }, 2000);
   };
 
   const getActivities = async () => {
@@ -140,6 +139,7 @@ const Dashboard = () => {
   const onSend = async () => {
     if (!recipient || recipient === "") {
       toast.error("Recipient is required");
+      setIsValidWalletId(false);
       return;
     }
 
@@ -172,7 +172,15 @@ const Dashboard = () => {
       amount: amountNum * 10 ** 18,
       payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
     });
+
     toast.success(txHash);
+
+    onClose();
+
+    setTimeout(() => {
+      getBalance();
+      getActivities();
+    }, 2000);
   };
 
   return (
@@ -346,11 +354,10 @@ const Dashboard = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Send Tokens
-              </ModalHeader>
-              <ModalBody>
+              <ModalHeader>Send Tokens</ModalHeader>
+              <ModalBody className="flex flex-col gap-5">
                 <Input
+                  className="mt-4"
                   type="text"
                   label="Aeternity Address"
                   placeholder="Enter aeternity address"
@@ -366,12 +373,13 @@ const Dashboard = () => {
                   }}
                 />
                 <Input
+                  className="mt-4"
                   type="number"
                   label="Amount"
                   placeholder="0.00"
                   labelPlacement="outside"
                   startContent={
-                    <div className="pointer-events-none flex items-center">
+                    <div className="pointer-events-none flex items-center pr-1">
                       <Image
                         src="images/aeternity-logo-icon.png"
                         alt=""
@@ -382,26 +390,14 @@ const Dashboard = () => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
-                {isValidWalletId ? (
-                  <Button
-                    color="success"
-                    variant="flat"
-                    className="mt-4"
-                    onPress={onClose}
-                  >
-                    Send
-                  </Button>
-                ) : (
-                  <Button
-                    color="success"
-                    variant="flat"
-                    className="mt-4"
-                    onPress={onClose}
-                    isDisabled
-                  >
-                    Send
-                  </Button>
-                )}
+                <Button
+                  color="success"
+                  variant="flat"
+                  onPress={onSend}
+                  isDisabled={!isValidWalletId}
+                >
+                  Send
+                </Button>
               </ModalBody>
               <ModalFooter>
                 <Button
