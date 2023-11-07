@@ -1,35 +1,41 @@
 "use client";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { useMetamask } from "@/context/metamask";
-import { shortenAddress } from "@/lib/utils";
+
+import React, { useEffect } from "react";
 import {
+  Navbar,
   NavbarBrand,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
   NavbarContent,
   NavbarItem,
-  Navbar as NextUINavbar,
-} from "@nextui-org/navbar";
-import {
+  Link,
   Button,
-  Card,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Image,
   Popover,
-  PopoverContent,
   PopoverTrigger,
   Snippet,
+  Card,
+  PopoverContent,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
+import { useTheme } from "next-themes";
+import { ThemeSwitch } from "./theme-switch";
+import { useMetamask } from "@/context/metamask";
+
+import { shortenAddress } from "@/lib/utils";
 import { SignOut } from "@phosphor-icons/react";
 import { ImQrcode } from "react-icons/im";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import QRCode from "react-qr-code";
-import { useTheme } from "next-themes";
 import { useMemo, useState } from "react";
 
-export const Navbar = () => {
+export const NavigationBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { address, disconnectAccount } = useMetamask();
+
   const { theme } = useTheme();
   const { changeOperationalNetwork } = useMetamask();
 
@@ -37,30 +43,52 @@ export const Navbar = () => {
 
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
+    [selectedKeys],
   );
 
+  useEffect(() => {
+    console.log("isMenuOpet", isMenuOpen);
+  }, [isMenuOpen]);
+
   return (
-    <NextUINavbar maxWidth="xl" position="static" className="md:rounded-lg">
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <div className="flex justify-start items-center gap-1">
-            <Image
-              width={150}
-              src={
-                theme === "dark"
-                  ? "/images/aeternity-logo-light.png"
-                  : "/images/aeternity-logo-dark.png"
-              }
-              alt="aeternity"
-            />
-          </div>
+    <Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
+      </NavbarContent>
+
+      <NavbarContent className="sm:hidden pr-3" justify="center">
+        <NavbarBrand>
+          <img
+            width={150}
+            src={
+              theme === "dark"
+                ? "/images/aeternity-logo-light.png"
+                : "/images/aeternity-logo-dark.png"
+            }
+            alt="aeternity"
+          />
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarBrand>
+          <img
+            width={150}
+            src={
+              theme === "dark"
+                ? "/images/aeternity-logo-light.png"
+                : "/images/aeternity-logo-dark.png"
+            }
+            alt="aeternity"
+          />
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent justify="end" className="hidden sm:flex">
         <NavbarItem className="sm:flex gap-2">
-          {address && (
+          {address && !isMenuOpen && (
             <Snippet size="sm" symbol="" codeString={address} disableTooltip>
               {shortenAddress(address ?? "")}
             </Snippet>
@@ -99,7 +127,7 @@ export const Navbar = () => {
                   variant="solid"
                   className="capitalize"
                   onClick={changeOperationalNetwork(
-                    selectedValue.toLowerCase()
+                    selectedValue.toLowerCase(),
                   )}
                 >
                   {selectedValue} <MdKeyboardArrowDown />
@@ -132,6 +160,87 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
-    </NextUINavbar>
+
+      <NavbarMenu>
+        <NavbarContent justify="end">
+          <NavbarMenuItem className="sm:flex gap-2">
+            {address && (
+              <Snippet size="sm" symbol="" codeString={address} disableTooltip>
+                {shortenAddress(address ?? "")}
+              </Snippet>
+            )}
+          </NavbarMenuItem>
+
+          <NavbarMenuItem className="sm:flex gap-2">
+            {address && (
+              <Popover placement="bottom" showArrow offset={10}>
+                <PopoverTrigger>
+                  <Button isIconOnly>
+                    <ImQrcode />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[240px] p-0">
+                  {(titleProps) => (
+                    <Card className="p-4 bg-white">
+                      <QRCode
+                        size={256}
+                        style={{
+                          height: "auto",
+                          maxWidth: "100%",
+                          width: "100%",
+                        }}
+                        value={address ?? ""}
+                        viewBox={`0 0 256 256`}
+                      />
+                    </Card>
+                  )}
+                </PopoverContent>
+              </Popover>
+            )}
+          </NavbarMenuItem>
+
+          <NavbarMenuItem className="sm:flex gap-2">
+            {address && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    variant="solid"
+                    className="capitalize"
+                    onClick={changeOperationalNetwork(
+                      selectedValue.toLowerCase(),
+                    )}
+                  >
+                    {selectedValue} <MdKeyboardArrowDown />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedKeys={selectedKeys}
+                  onSelectionChange={setSelectedKeys}
+                >
+                  <DropdownItem key="Mainnet">Mainnet</DropdownItem>
+                  <DropdownItem key="Testnet">Testnet</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
+          </NavbarMenuItem>
+
+          <NavbarMenuItem className="sm:flex gap-2">
+            {address && (
+              <Button
+                color="danger"
+                startContent={<SignOut />}
+                onPress={disconnectAccount}
+              >
+                Disconnect
+              </Button>
+            )}
+          </NavbarMenuItem>
+        </NavbarContent>
+        ,
+      </NavbarMenu>
+    </Navbar>
   );
 };
