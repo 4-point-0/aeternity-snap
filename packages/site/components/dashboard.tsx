@@ -1,7 +1,7 @@
-'use client';
-import { useMetamask } from '@/context/metamask';
-import { shortenHash } from '@/lib/utils';
-import { Encoding, Tag, encode } from '@aeternity/aepp-sdk';
+"use client";
+import { useMetamask } from "@/context/metamask";
+import { shortenHash } from "@/lib/utils";
+import { Encoding, Tag, encode } from "@aeternity/aepp-sdk";
 import {
   Button,
   Card,
@@ -14,14 +14,14 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from '@nextui-org/react';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import debounce from 'lodash/debounce';
+} from "@nextui-org/react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import debounce from "lodash/debounce";
 
-let USDollar = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
+let USDollar = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
 });
 
 const Dashboard = () => {
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
       if (!response.ok) {
         setIsValidWalletId(false);
-        throw new Error('Failed to fetch data');
+        throw new Error("Failed to fetch data");
       }
 
       if (await response.json()) {
@@ -64,8 +64,8 @@ const Dashboard = () => {
   const [usdBalance, setUsdBalance] = useState(0);
   const [activities, setActivities] = useState([]);
 
-  const [recipient, setRecipient] = useState('');
-  const [amount, setAmount] = useState('');
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     getBalance();
@@ -83,7 +83,7 @@ const Dashboard = () => {
     setAddressBalance(humanReadableBalance);
 
     const coingeckoResponse = await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=aeternity&vs_currencies=usd',
+      "https://api.coingecko.com/api/v3/simple/price?ids=aeternity&vs_currencies=usd",
     );
 
     const { aeternity } = await coingeckoResponse.json();
@@ -95,7 +95,7 @@ const Dashboard = () => {
     const response = await fetch(
       `https://faucet.aepps.com/account/${address}`,
       {
-        method: 'POST',
+        method: "POST",
       },
     );
 
@@ -138,30 +138,30 @@ const Dashboard = () => {
   };
 
   const onSend = async () => {
-    if (!recipient || recipient === '') {
-      toast.error('Recipient is required');
+    if (!recipient || recipient === "") {
+      toast.error("Recipient is required");
       return;
     }
 
-    if (!amount || amount === '') {
-      toast.error('Amount is required');
+    if (!amount || amount === "") {
+      toast.error("Amount is required");
       return;
     }
 
     const amountNum = parseFloat(amount);
 
     if (Number.isNaN(amountNum)) {
-      toast.error('Amount must be a number');
+      toast.error("Amount must be a number");
       return;
     }
 
     if (amountNum <= 0) {
-      toast.error('Amount must be greater than 0');
+      toast.error("Amount must be greater than 0");
       return;
     }
 
     if (amountNum > addressBalance) {
-      toast.error('Amount must be less than your balance');
+      toast.error("Amount must be less than your balance");
       return;
     }
 
@@ -170,14 +170,14 @@ const Dashboard = () => {
       senderId: address,
       recipientId: recipient,
       amount: amountNum * 10 ** 18,
-      payload: encode(new TextEncoder().encode(''), Encoding.Bytearray),
+      payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
     });
     toast.success(txHash);
   };
 
   return (
     <div className="grid grid-cols-3 gap-3 min-h-[100%]">
-      <div className="h-auto">
+      <div className="col-span-3 md:col-span-1 h-auto">
         <Card className="flex">
           <CardBody className="">
             <div className="flex my-auto justify-between">
@@ -195,7 +195,7 @@ const Dashboard = () => {
                 <p>{USDollar.format(usdBalance)}</p>
               </div>
               <div className="flex mt-12 gap-2">
-                {currentOperationalNetwork === 'testnet' ? (
+                {currentOperationalNetwork === "testnet" ? (
                   <Button
                     size="sm"
                     variant="bordered"
@@ -213,7 +213,7 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
-      <div className="col-span-2 row-span-6">
+      <div className="col-span-3 md:col-span-2 row-span-6">
         <Card className="h-[100%]">
           <CardBody className="mx-auto">
             <div className="items-center gap-6 drop-shadow-md p-10">
@@ -264,7 +264,7 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
-      <div className="h-auto">
+      <div className="col-span-3 md:col-span-1 h-auto">
         <Card>
           <CardBody>
             <p className="text-sm text-center">
@@ -275,7 +275,7 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
-      <div className="row-span-4 h-unit-9xl">
+      <div className="row-span-4 col-span-3 md:col-span-1 h-unit-9xl">
         <Card className="h-[100%]">
           <CardBody>
             <div className="flex">
@@ -359,7 +359,7 @@ const Dashboard = () => {
                   errorMessage={
                     isValidWalletId
                       ? null
-                      : 'Please enter a valid wallet address'
+                      : "Please enter a valid wallet address"
                   }
                   onChange={(e) => {
                     handelInputChange(e);
