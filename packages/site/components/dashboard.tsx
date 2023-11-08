@@ -242,7 +242,7 @@ const Dashboard = () => {
                     src="images/metamask-icon.png"
                     alt=""
                     width={80}
-                    className="ml-6"
+                    className="ml-10"
                   />
                 </div>
                 <h1 className="mt-5 mb-5 text-2xl font-bold">
