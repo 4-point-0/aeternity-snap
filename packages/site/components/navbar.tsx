@@ -46,16 +46,14 @@ export const NavigationBar = () => {
     [selectedKeys],
   );
 
-  useEffect(() => {
-    console.log("isMenuOpet", isMenuOpen);
-  }, [isMenuOpen]);
-
   return (
     <Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
+        {address && (
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          />
+        )}
       </NavbarContent>
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
@@ -162,77 +160,87 @@ export const NavigationBar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarContent justify="end">
-          <NavbarMenuItem className="sm:flex gap-2">
-            {address && (
-              <Snippet size="sm" symbol="" codeString={address} disableTooltip>
-                {shortenAddress(address ?? "")}
-              </Snippet>
-            )}
-          </NavbarMenuItem>
-
-          <NavbarMenuItem className="sm:flex gap-2">
-            {address && (
-              <Popover placement="bottom" showArrow offset={10}>
-                <PopoverTrigger>
-                  <Button isIconOnly>
-                    <ImQrcode />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[240px] p-0">
-                  {(titleProps) => (
-                    <Card className="p-4 bg-white">
-                      <QRCode
-                        size={256}
-                        style={{
-                          height: "auto",
-                          maxWidth: "100%",
-                          width: "100%",
-                        }}
-                        value={address ?? ""}
-                        viewBox={`0 0 256 256`}
-                      />
-                    </Card>
-                  )}
-                </PopoverContent>
-              </Popover>
-            )}
-          </NavbarMenuItem>
-
-          <NavbarMenuItem className="sm:flex gap-2">
-            {address && (
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    variant="solid"
-                    className="capitalize"
-                    onClick={changeOperationalNetwork(
-                      selectedValue.toLowerCase(),
-                    )}
-                  >
-                    {selectedValue} <MdKeyboardArrowDown />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  variant="flat"
-                  disallowEmptySelection
-                  selectionMode="single"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={setSelectedKeys}
+        <NavbarContent justify="end" className="inline-block">
+          <div className="flex mb-5">
+            <NavbarMenuItem className="sm:flex gap-2">
+              {address && (
+                <Snippet
+                  size="sm"
+                  symbol=""
+                  codeString={address}
+                  disableTooltip
                 >
-                  <DropdownItem key="Mainnet">Mainnet</DropdownItem>
-                  <DropdownItem key="Testnet">Testnet</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            )}
-          </NavbarMenuItem>
+                  {shortenAddress(address ?? "")}
+                </Snippet>
+              )}
+            </NavbarMenuItem>
 
-          <NavbarMenuItem className="sm:flex gap-2">
+            <NavbarMenuItem className="sm:flex gap-2 ml-2">
+              {address && (
+                <Popover placement="bottom" showArrow offset={10}>
+                  <PopoverTrigger>
+                    <Button isIconOnly>
+                      <ImQrcode />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[240px] p-0 mt-2">
+                    {(titleProps) => (
+                      <Card className="p-4 bg-white">
+                        <QRCode
+                          size={256}
+                          style={{
+                            height: "auto",
+                            maxWidth: "100%",
+                            width: "100%",
+                          }}
+                          value={address ?? ""}
+                          viewBox={`0 0 256 256`}
+                        />
+                      </Card>
+                    )}
+                  </PopoverContent>
+                </Popover>
+              )}
+            </NavbarMenuItem>
+
+            <NavbarMenuItem className="sm:flex gap-2 ml-2">
+              {address && (
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button
+                      variant="solid"
+                      className="capitalize"
+                      onClick={changeOperationalNetwork(
+                        selectedValue.toLowerCase(),
+                      )}
+                    >
+                      {selectedValue} <MdKeyboardArrowDown />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    variant="flat"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={setSelectedKeys}
+                  >
+                    <DropdownItem key="Mainnet">Mainnet</DropdownItem>
+                    <DropdownItem key="Testnet">Testnet</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
+            </NavbarMenuItem>
+          </div>
+
+          <NavbarMenuItem className="sm:flex gap-2 mt-2">
             {address && (
               <Button
                 color="danger"
                 startContent={<SignOut />}
-                onPress={disconnectAccount}
+                onPress={() => {
+                  disconnectAccount();
+                  setIsMenuOpen(false);
+                }}
               >
                 Disconnect
               </Button>
