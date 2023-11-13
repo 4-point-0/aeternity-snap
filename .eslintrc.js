@@ -3,11 +3,12 @@ module.exports = {
   parserOptions: {
     sourceType: "module",
   },
+  extends: ["@metamask/eslint-config", "prettier"],
+  plugins: ["prettier"],
   rules: {
     "@typescript-eslint/quotes": "off",
+    "prettier/prettier": "off",
   },
-
-  extends: ["@metamask/eslint-config"],
 
   overrides: [
     {
@@ -30,7 +31,7 @@ module.exports = {
       rules: {
         "@typescript-eslint/no-shadow": [
           "error",
-          {allow: ["describe", "expect", "it"]},
+          { allow: ["describe", "expect", "it"] },
         ],
       },
     },
