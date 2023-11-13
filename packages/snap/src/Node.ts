@@ -56,14 +56,14 @@ const numberPropertyNames = [
 class NodeTransformed extends NodeApi {
   async sendOperationRequest(
     operationArguments: OperationArguments,
-    operationSpec: OperationSpec
+    operationSpec: OperationSpec,
   ): Promise<any> {
     const args = mapObject(operationArguments, ([key, value]) => [
       key,
       this.#encodeArg(value),
     ]) as OperationArguments;
     return this.#decodeRes(
-      await super.sendOperationRequest(args, operationSpec)
+      await super.sendOperationRequest(args, operationSpec),
     );
   }
 
@@ -72,13 +72,13 @@ class NodeTransformed extends NodeApi {
     transform: {
       bigInt: (v: any) => any;
       number: (v: any) => any;
-    }
+    },
   ): unknown {
     if (Array.isArray(data))
       return data.map((d) => this.#mapData(d, transform));
-    if (data != null && typeof data === "object") {
+    if (data !== null && typeof data === "object") {
       return mapObject(data, ([key, value]) => {
-        if (value == null) return [key, value];
+        if (value === null) return [key, value];
         if (bigIntPropertyNames.some((k) => k === key))
           return [key, transform.bigInt(value)];
         if (numberPropertyNames.some((k) => k === key))
@@ -102,7 +102,7 @@ class NodeTransformed extends NodeApi {
   #decodeRes(data: any): any {
     return this.#mapData(data, {
       bigInt: (value) => BigInt(value),
-      number: (value) => +value,
+      number: (value) => Number(value),
     });
   }
 }
@@ -146,23 +146,16 @@ type NodeTransformedApi = new (
     : TransformNodeType<NodeApi[Name]>;
 };
 
-interface NodeInfo {
+type NodeInfo = {
   url: string;
   nodeNetworkId: string;
   version: string;
   consensusProtocolVersion: ConsensusProtocolVersion;
-}
+};
 
 export default class Node extends (NodeTransformed as unknown as NodeTransformedApi) {
   #networkIdPromise?: Promise<string | Error>;
 
-  /**
-   * @param url - Url for node API
-   * @param options - Options
-   * @param options.ignoreVersion - Don't ensure that the node is supported
-   * @param options.retryCount - Amount of extra requests to do in case of failure
-   * @param options.retryOverallDelay - Time in ms to wait between all retries
-   */
   constructor(
     url: string,
     {
@@ -174,7 +167,7 @@ export default class Node extends (NodeTransformed as unknown as NodeTransformed
       ignoreVersion?: boolean;
       retryCount?: number;
       retryOverallDelay?: number;
-    } = {}
+    } = {},
   ) {
     // eslint-disable-next-line constructor-super
     super(url, {
@@ -187,24 +180,26 @@ export default class Node extends (NodeTransformed as unknown as NodeTransformed
       ],
       ...options,
     });
+
     if (!ignoreVersion) {
       const statusPromise = this.getStatus();
       const versionPromise = statusPromise.then(
         ({ nodeVersion }: any) => nodeVersion,
-        (error: any) => error
+        (error: any) => error,
       );
       this.#networkIdPromise = statusPromise.then(
         ({ networkId }: any) => networkId,
-        (error: any) => error
+        (error: any) => error,
       );
+
       this.pipeline.addPolicy(
         genVersionCheckPolicy(
           "node",
           "/v3/status",
           versionPromise,
           "6.2.0",
-          "7.0.0"
-        )
+          "7.0.0",
+        ),
       );
     }
     this.intAsString = true;
@@ -212,11 +207,11 @@ export default class Node extends (NodeTransformed as unknown as NodeTransformed
 
   async getNetworkId(): Promise<string> {
     this.#networkIdPromise ??= this.getStatus().then(
-      ({ networkId }: any) => networkId
+      ({ networkId }: any) => networkId,
     );
     const networkId = await this.#networkIdPromise;
     if (networkId instanceof Error) throw networkId;
-    return networkId!;
+    return networkId;
   }
 
   async getNodeInfo(): Promise<NodeInfo> {
@@ -229,25 +224,25 @@ export default class Node extends (NodeTransformed as unknown as NodeTransformed
 
     const consensusProtocolVersion = protocols
       .filter(
-        ({ effectiveAtHeight }: any) => topBlockHeight >= effectiveAtHeight
+        ({ effectiveAtHeight }: any) => topBlockHeight >= effectiveAtHeight,
       )
       .reduce(
         (acc: any, p: any) =>
           p.effectiveAtHeight > acc.effectiveAtHeight ? p : acc,
-        { effectiveAtHeight: -1, version: 0 }
+        { effectiveAtHeight: -1, version: 0 },
       ).version;
-    if (ConsensusProtocolVersion[consensusProtocolVersion] == null) {
+    if (ConsensusProtocolVersion[consensusProtocolVersion] === null) {
       const version = consensusProtocolVersion.toString();
       const versions = Object.values(ConsensusProtocolVersion)
         .filter((el) => typeof el === "number")
-        .map((el) => +el);
+        .map((el) => Number(el));
       const geVersion = Math.min(...versions).toString();
       const ltVersion = (Math.max(...versions) + 1).toString();
       throw new UnsupportedVersionError(
         "consensus protocol",
         version,
         geVersion,
-        ltVersion
+        ltVersion,
       );
     }
 
