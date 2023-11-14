@@ -40,6 +40,13 @@ const Dashboard = () => {
 
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
 
+  const [addressBalance, setAddressBalance] = useState(0);
+  const [usdBalance, setUsdBalance] = useState(0);
+  const [activities, setActivities] = useState([]);
+
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
+
   const checkWallet = async (address: string) => {
     try {
       const response = await fetch(
@@ -65,17 +72,10 @@ const Dashboard = () => {
     debounceHandleSearch(address);
   };
 
-  const [addressBalance, setAddressBalance] = useState(0);
-  const [usdBalance, setUsdBalance] = useState(0);
-  const [activities, setActivities] = useState([]);
-
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
-
   useEffect(() => {
     getBalance();
     getActivities();
-  }, []);
+  }, [currentOperationalNetwork]);
 
   const getBalance = async () => {
     const response = await fetch(
@@ -85,7 +85,7 @@ const Dashboard = () => {
     const { balance } = await response.json();
 
     const humanReadableBalance = balance / 10 ** 18;
-    setAddressBalance(humanReadableBalance);
+    setAddressBalance(humanReadableBalance ? humanReadableBalance : 0);
 
     const coingeckoResponse = await fetch(
       "https://api.coingecko.com/api/v3/simple/price?ids=aeternity&vs_currencies=usd",
@@ -93,7 +93,8 @@ const Dashboard = () => {
 
     const { aeternity } = await coingeckoResponse.json();
     const usdBalance = humanReadableBalance * aeternity.usd;
-    setUsdBalance(usdBalance);
+
+    setUsdBalance(usdBalance ? usdBalance : 0);
   };
 
   const getFromFaucet = async () => {
@@ -313,18 +314,6 @@ const Dashboard = () => {
                     extension.
                   </p>
                 </div>
-                {/* <div className="flex justify-center mt-4">
-                    <Button
-                        size="sm"
-                        className="font-bold"
-                        onPress={async () => {
-                          const r = await signMessage();
-                          toast.success(JSON.stringify(r));
-                        }}
-                      >
-                        Sign Message
-                      </Button>
-                  </div> */}
               </div>
             </Tab>
             <Tab key="sendMessage" title="Send Message">
