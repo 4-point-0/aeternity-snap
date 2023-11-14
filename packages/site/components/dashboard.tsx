@@ -13,11 +13,19 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Tab,
+  Tabs,
+  Textarea,
   useDisclosure,
 } from "@nextui-org/react";
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+import { BsPenFill } from "react-icons/bs";
+import { FaSignature } from "react-icons/fa";
+
+import { BsEnvelopeCheckFill } from "react-icons/bs";
 
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -223,7 +231,7 @@ const Dashboard = () => {
       </div>
       <div className="col-span-3 md:col-span-2 row-span-6">
         <Card className="h-[100%]">
-          <CardBody className="mx-auto">
+          {/* <CardBody className="mx-auto">
             <div className="items-center gap-6 drop-shadow-md p-10">
               <div className="text-center mt-56">
                 <div className="flex justify-center items-center">
@@ -269,7 +277,138 @@ const Dashboard = () => {
                 </Button>
               </div>
             </div>
-          </CardBody>
+          </CardBody> */}
+
+          <Tabs aria-label="Options" className="m-5">
+            <Tab key="home" title="Home">
+              <div className="m-5 mx-auto mt-[20%]">
+                <div className="flex flex-col items-center justify-center h-full align-middle gap-6 drop-shadow-md p-10 text-center">
+                  <div className="flex justify-center items-center">
+                    <Image
+                      src="images/aeternity-logo-icon.png"
+                      alt="aeternity logo"
+                      width={80}
+                    />
+                    <Image
+                      src="images/icon-x.png"
+                      alt="x logo"
+                      width={30}
+                      className="ml-6"
+                    />
+                    <Image
+                      src="images/metamask-icon.png"
+                      alt="metamask logo"
+                      width={80}
+                      className="ml-10"
+                    />
+                  </div>
+                  <h1 className="mt-5 mb-5 text-2xl font-bold">
+                    Welcome to Aeternity Wallet Explorer,
+                    <br /> powered by MetaMask
+                  </h1>
+                  <p className="text-sm">
+                    This explorer will allow you to connect with Aeternity dApps
+                    and view and manage tokens via the MetaMask Wallet. Note,
+                    this account won&rsquo;t be visible in your MetaMask browser
+                    extension.
+                  </p>
+                </div>
+                {/* <div className="flex justify-center mt-4">
+                    <Button
+                        size="sm"
+                        className="font-bold"
+                        onPress={async () => {
+                          const r = await signMessage();
+                          toast.success(JSON.stringify(r));
+                        }}
+                      >
+                        Sign Message
+                      </Button>
+                  </div> */}
+              </div>
+            </Tab>
+            <Tab key="sendMessage" title="Send Message">
+              <div className="m-5 mx-auto mt-[20%]">
+                <div className="items-center gap-6 drop-shadow-md p-10 text-center my-auto">
+                  <div className="flex justify-center items-center">
+                    <FaSignature size="10%" />
+                    <BsPenFill size="12%" className="ml-3 mb-10" />
+                  </div>
+                  <h1 className="mt-5 mb-5 text-2xl font-bold">
+                    Sign the message
+                  </h1>
+                  <p className="text-sm">
+                    The process of signing involves creating a digital signature
+                    using the sender's private key and the original message.
+                    This signature proves that the sender is the owner of the
+                    private key and therefore the associated public key and
+                    blockchain address.
+                  </p>
+                </div>
+                <div className="flex justify-center items-center">
+                  <Textarea
+                    label="Sign the message"
+                    isRequired
+                    placeholder="Enter your signature"
+                    className="max-w-xs"
+                  />
+                </div>
+                <div className="flex justify-center mt-4">
+                  <Button
+                    size="sm"
+                    className="font-bold"
+                    onPress={async () => {
+                      const r = await signMessage();
+                      toast.success(JSON.stringify(r));
+                    }}
+                  >
+                    Sign
+                  </Button>
+                </div>
+              </div>
+            </Tab>
+            <Tab key="verifyMessage" title="Verify Message">
+              <div className="m-5 mx-auto mt-[20%]">
+                <div className="items-center gap-6 drop-shadow-md p-10 text-center my-auto">
+                  <div className="flex justify-center items-center">
+                    <BsEnvelopeCheckFill size="15%" />
+                  </div>
+                  <h1 className="mt-5 mb-5 text-2xl font-bold">
+                    Verify the message
+                  </h1>
+                  <p className="text-sm">
+                    When the message is received, other network participants can
+                    verify the authenticity of the message. They do this by
+                    using the sender's public key to check the digital
+                    signature. If the signature is valid, it confirms that the
+                    message was indeed signed by the owner of the corresponding
+                    private key and that the message has not been altered since
+                    it was signed.
+                  </p>
+                </div>
+                <div className="flex justify-center items-center">
+                  <Textarea
+                    label="Verify the message"
+                    isRequired
+                    placeholder="Enter your verification"
+                    className="max-w-xs"
+                  />
+                </div>
+                <div className="flex justify-center mt-4">
+                  <Button
+                    size="sm"
+                    className="font-bold"
+                    onPress={async () => {
+                      const r = await signMessage();
+                      toast.success(JSON.stringify(r));
+                    }}
+                  >
+                    Verify
+                  </Button>
+                </div>
+              </div>
+            </Tab>
+          </Tabs>
         </Card>
       </div>
       <div className="col-span-3 md:col-span-1 h-auto">
