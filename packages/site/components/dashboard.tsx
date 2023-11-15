@@ -17,6 +17,7 @@ import {
   Tabs,
   Textarea,
   useDisclosure,
+  Snippet,
 } from "@nextui-org/react";
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useState } from "react";
@@ -26,6 +27,10 @@ import { BsPenFill } from "react-icons/bs";
 import { FaSignature } from "react-icons/fa";
 
 import { BsEnvelopeCheckFill } from "react-icons/bs";
+
+import base64js from "base64-js";
+
+import { verify, hash } from "@aeternity/aepp-sdk";
 
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -40,12 +45,19 @@ const Dashboard = () => {
 
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
 
+  const [loading, setLoading] = useState(false);
+
   const [addressBalance, setAddressBalance] = useState(0);
-  const [usdBalance, setUsdBalance] = useState(0);
+  const [usdBalance, setUsdBalance] = useState<number>(0);
   const [activities, setActivities] = useState([]);
 
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
+
+  const [signedMessage, setSignedMessage] = useState<string>("");
+  const [verifiedTransaction, setVerifiedTransaction] = useState<string | null>(
+    null,
+  );
 
   const checkWallet = async (address: string) => {
     try {
@@ -192,6 +204,43 @@ const Dashboard = () => {
     }, 2000);
   };
 
+  const handleSignMessage = async () => {
+    const { signature } = await signMessage();
+    setSignedMessage(signature);
+    toast.success(`The message has been signed: ${signature}`);
+  };
+
+  const handleVerifyMessage = async () => {
+    try {
+      setLoading(true);
+
+      const messageBytes = base64js.toByteArray(signedMessage);
+      let decodedMessage = "";
+      try {
+        decodedMessage = new TextDecoder().decode(messageBytes);
+      } catch (error) {
+        decodedMessage = "Unable to decode message";
+      }
+
+      const verifiedMessage = verify(
+        hash(decodedMessage),
+        base64js.toByteArray(signedMessage),
+        address as any,
+      );
+
+      if (verifiedMessage) {
+        toast.success(`The message has successfully been verified`);
+      } else {
+        toast;
+      }
+    } catch (error) {
+      toast.error("Verification failed");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="grid grid-cols-3 gap-3 min-h-[100%]">
       <div className="col-span-3 md:col-span-1 h-auto">
@@ -232,54 +281,6 @@ const Dashboard = () => {
       </div>
       <div className="col-span-3 md:col-span-2 row-span-6">
         <Card className="h-[100%]">
-          {/* <CardBody className="mx-auto">
-            <div className="items-center gap-6 drop-shadow-md p-10">
-              <div className="text-center mt-56">
-                <div className="flex justify-center items-center">
-                  <Image
-                    src="images/aeternity-logo-icon.png"
-                    alt=""
-                    width={80}
-                  />
-                  <Image
-                    src="images/icon-x.png"
-                    alt=""
-                    width={30}
-                    className="ml-6"
-                  />
-                  <Image
-                    src="images/metamask-icon.png"
-                    alt=""
-                    width={80}
-                    className="ml-10"
-                  />
-                </div>
-                <h1 className="mt-5 mb-5 text-2xl font-bold">
-                  Welcome to Aeternity Wallet Explorer,
-                  <br /> powered by MetaMask
-                </h1>
-                <p className="text-sm">
-                  This explorer will allow you to connect with Aeternity dApps
-                  and view and manage tokens via the MetaMask Wallet. Note, this
-                  account won&rsquo;t be visible in your MetaMask browser
-                  extension.
-                </p>
-              </div>
-              <div className="flex justify-center mt-4">
-                <Button
-                  size="sm"
-                  className="font-bold"
-                  onPress={async () => {
-                    const r = await signMessage();
-                    toast.success(JSON.stringify(r));
-                  }}
-                >
-                  Sign Message
-                </Button>
-              </div>
-            </div>
-          </CardBody> */}
-
           <Tabs aria-label="Options" className="m-5">
             <Tab key="home" title="Home">
               <div className="m-5 mx-auto mt-[20%]">
@@ -316,7 +317,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </Tab>
-            <Tab key="sendMessage" title="Send Message">
+            <Tab key="signMessage" title="Sign Message">
               <div className="m-5 mx-auto mt-[20%]">
                 <div className="items-center gap-6 drop-shadow-md p-10 text-center my-auto">
                   <div className="flex justify-center items-center">
@@ -334,25 +335,24 @@ const Dashboard = () => {
                     blockchain address.
                   </p>
                 </div>
-                <div className="flex justify-center items-center">
-                  <Textarea
-                    label="Sign the message"
-                    isRequired
-                    placeholder="Enter your signature"
-                    className="max-w-xs"
-                  />
-                </div>
-                <div className="flex justify-center mt-4">
+
+                <div className="flex justify-center mt-2">
                   <Button
                     size="sm"
                     className="font-bold"
                     onPress={async () => {
-                      const r = await signMessage();
-                      toast.success(JSON.stringify(r));
+                      handleSignMessage();
                     }}
                   >
                     Sign
                   </Button>
+                </div>
+                <div className="flex justify-center mt-4">
+                  {signedMessage ? (
+                    <Snippet size="sm" symbol="" disableTooltip>
+                      {signedMessage}
+                    </Snippet>
+                  ) : null}
                 </div>
               </div>
             </Tab>
@@ -381,15 +381,18 @@ const Dashboard = () => {
                     isRequired
                     placeholder="Enter your verification"
                     className="max-w-xs"
+                    value={verifiedTransaction ?? ""}
+                    onValueChange={setVerifiedTransaction}
                   />
                 </div>
                 <div className="flex justify-center mt-4">
                   <Button
                     size="sm"
                     className="font-bold"
+                    isDisabled={!verifiedTransaction}
                     onPress={async () => {
-                      const r = await signMessage();
-                      toast.success(JSON.stringify(r));
+                      handleVerifyMessage();
+                      setVerifiedTransaction("");
                     }}
                   >
                     Verify
@@ -419,7 +422,11 @@ const Dashboard = () => {
                 Activites ({activities.length})
               </p>
               <a
-                href={`https://testnet.aescan.io/accounts/${address}`}
+                href={
+                  currentOperationalNetwork === "testnet"
+                    ? `https://testnet.aescan.io/accounts/${address}`
+                    : `https://aescan.io/accounts/${address}`
+                }
                 target="_blank"
                 className="ml-auto text-red-400"
               >
@@ -449,7 +456,11 @@ const Dashboard = () => {
                     >
                       <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <a
-                          href={`https://testnet.aescan.io/transactions/${item.hash}`}
+                          href={
+                            currentOperationalNetwork === "testnet"
+                              ? `https://${currentOperationalNetwork}.aescan.io/transactions/${item.hash}`
+                              : `https://aescan.io/transactions/${item.hash}`
+                          }
                           target="_blank"
                           className="text-red-400"
                         >
