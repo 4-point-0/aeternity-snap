@@ -20,5 +20,5 @@
     ],
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "index.d.ts", "../site/common/constants.ts"]
+  "include": ["src", "index.d.ts", "./src/constants.ts"]
 }
