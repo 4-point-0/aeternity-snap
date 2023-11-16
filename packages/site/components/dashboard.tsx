@@ -1,7 +1,7 @@
 "use client";
 import { useMetamask } from "@/context/metamask";
 import { shortenHash } from "@/lib/utils";
-import { Encoding, Tag, encode } from "@aeternity/aepp-sdk";
+import { Encoding, Tag, encode, verifyMessage } from "@aeternity/aepp-sdk";
 import {
   Button,
   Card,
@@ -30,8 +30,6 @@ import { BsEnvelopeCheckFill } from "react-icons/bs";
 
 import base64js from "base64-js";
 
-import { verify, hash } from "@aeternity/aepp-sdk";
-
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -54,10 +52,11 @@ const Dashboard = () => {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
 
-  const [signedMessage, setSignedMessage] = useState<string>("");
-  const [verifiedTransaction, setVerifiedTransaction] = useState<string | null>(
-    null,
-  );
+  const [messageSignature, setMessageSignature] = useState<string>("");
+  const [messageSignatureVerify, setMessageSignatureVerify] =
+    useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [encodedMessage, setEncodedMessage] = useState<string>("");
 
   const checkWallet = async (address: string) => {
     try {
@@ -205,26 +204,27 @@ const Dashboard = () => {
   };
 
   const handleSignMessage = async () => {
-    const { signature } = await signMessage();
-    setSignedMessage(signature);
+    const encodedMsg = btoa(message);
+    setEncodedMessage(encodedMsg);
+    const { signature } = await signMessage(encodedMsg);
+    setMessageSignature(signature);
     toast.success(`The message has been signed: ${signature}`);
   };
 
   const handleVerifyMessage = async () => {
     try {
       setLoading(true);
-
-      const messageBytes = base64js.toByteArray(signedMessage);
+      const messageBytes = base64js.toByteArray(encodedMessage);
       let decodedMessage = "";
       try {
         decodedMessage = new TextDecoder().decode(messageBytes);
       } catch (error) {
         decodedMessage = "Unable to decode message";
       }
-
-      const verifiedMessage = verify(
-        hash(decodedMessage),
-        base64js.toByteArray(signedMessage),
+      const signed = base64js.toByteArray(messageSignature);
+      const verifiedMessage = verifyMessage(
+        decodedMessage,
+        signed,
         address as any,
       );
 
@@ -336,6 +336,16 @@ const Dashboard = () => {
                   </p>
                 </div>
 
+                <div className="flex justify-center items-center">
+                  <Textarea
+                    label="Message"
+                    isRequired
+                    placeholder="Enter message"
+                    className="max-w-xs"
+                    value={message ?? ""}
+                    onValueChange={setMessage}
+                  />
+                </div>
                 <div className="flex justify-center mt-2">
                   <Button
                     size="sm"
@@ -348,9 +358,9 @@ const Dashboard = () => {
                   </Button>
                 </div>
                 <div className="flex justify-center mt-4">
-                  {signedMessage ? (
+                  {messageSignature ? (
                     <Snippet size="sm" symbol="" disableTooltip>
-                      {signedMessage}
+                      {messageSignature}
                     </Snippet>
                   ) : null}
                 </div>
@@ -381,18 +391,17 @@ const Dashboard = () => {
                     isRequired
                     placeholder="Enter your verification"
                     className="max-w-xs"
-                    value={verifiedTransaction ?? ""}
-                    onValueChange={setVerifiedTransaction}
+                    value={messageSignatureVerify ?? ""}
+                    onValueChange={setMessageSignatureVerify}
                   />
                 </div>
                 <div className="flex justify-center mt-4">
                   <Button
                     size="sm"
                     className="font-bold"
-                    isDisabled={!verifiedTransaction}
+                    isDisabled={!message}
                     onPress={async () => {
                       handleVerifyMessage();
-                      setVerifiedTransaction("");
                     }}
                   >
                     Verify
