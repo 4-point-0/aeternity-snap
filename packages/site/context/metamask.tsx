@@ -1,162 +1,46 @@
-import {
-  getNetworkId,
-  getNetworkName,
-  getNetworkRpcUrl,
-} from "@/common/constants";
-import { AeSdk, Node } from "@aeternity/aepp-sdk";
-import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import React, { useContext, useState } from "react";
+import { AESnap } from '@aeternity-snap/sdk';
+import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
+import { NetworkId } from '../common/constants';
 
 interface MetamaskContext {
   connectAccount: () => void;
   disconnectAccount: () => void;
   signMessage: (msg: string) => Promise<any>;
-  signAndSendTransaction: (payload: any) => Promise<any>;
+  signAndSendTransaction: (payload: TxParamsAsync) => Promise<string>;
   address: string | null;
   currentOperationalNetwork: string;
-  changeOperationalNetwork: any;
+  changeOperationalNetwork: (network: string) => void;
 }
 
 const MetamaskContext = React.createContext<MetamaskContext | null>(null);
 
 export const MetamaskProvider = ({ children }: any) => {
   const [address, setAddress] = useState<string | null>(null);
-
-  const [currentOperationalNetwork, setCurrentOperationalNetwork] =
-    useState<string>("testnet");
-
-  const changeOperationalNetwork = async (operationalNetwork: string) => {
-    setCurrentOperationalNetwork(operationalNetwork);
-  };
-
-  const snapId = `local:${"http://localhost:8080"}`;
-
-  const getSnaps = async () => {
-    return await (window as any).ethereum.request({
-      method: "wallet_getSnaps",
-    });
-  };
-
-  const getSnap = async (id: string, version?: string) => {
-    try {
-      const snaps = await getSnaps();
-      return Object.values(snaps).find(
-        (snap) =>
-          (snap as any).id === id &&
-          (!version || (snap as any).version === version),
-      );
-    } catch (e) {
-      console.log("Failed to obtain installed snap", e);
-      return undefined;
-    }
-  };
+  const [currentOperationalNetwork, setCurrentOperationalNetwork] = useState<string>("testnet");
 
   const connectAccount = async () => {
-    const snap = await getSnap(snapId);
-
-    if (snap) {
-      await getPubkey();
-      return;
-    }
-
-    try {
-      const response = await (window as any).ethereum.request({
-        method: "wallet_requestSnaps",
-        params: { [snapId]: {} },
-      });
-      await getPubkey();
-    } catch (err: any) {
-      console.error(err);
-      alert("Problem happened: " + err.message || err);
-    }
+    const aeSnap = await AESnap.connect(NetworkId.testnet);
+    const publicKey = await aeSnap.getPublicKey();
+    setAddress(publicKey);
   };
 
-  async function getPubkey() {
-    try {
-      const response = await (window as any).ethereum.request({
-        method: "wallet_invokeSnap",
-        params: {
-          snapId,
-          request: {
-            method: "getPublicKey",
-            params: {
-              derivationPath: [`0'`, `0'`, `0'`],
-              confirm: true,
-            },
-          },
-        },
-      });
-      setAddress(response.pubkey);
-    } catch (err) {
-      console.error(err);
-      alert("Problem happened: " + (err as any).message || err);
-    }
-  }
+  const signMessage = async (msg: string) => {
+    const aeSnap = await AESnap.connect(NetworkId.testnet);
+    return aeSnap.signMessage(msg);
+  };
 
-  async function signMessage(msg: string) {
-    try {
-      const response = await (window as any).ethereum.request({
-        method: "wallet_invokeSnap",
-        params: {
-          snapId,
-          request: {
-            method: "signMessage",
-            params: {
-              derivationPath: [`0'`, `0'`, `0'`],
-              message: msg,
-            },
-          },
-        },
-      });
-      return response;
-    } catch (err) {
-      console.error(err);
-      alert("Problem happened: " + (err as any).message || err);
-    }
-  }
+  const signAndSendTransaction = async (payload: TxParamsAsync) => {
+    const aeSnap = await AESnap.connect(NetworkId.testnet);
+    return aeSnap.signAndSendTransaction(payload);
+  };
 
-  async function signAndSendTransaction(payload: TxParamsAsync) {
-    const aeSdk = new AeSdk({
-      nodes: [
-        {
-          name: getNetworkName(currentOperationalNetwork),
-          instance: new Node(getNetworkRpcUrl(currentOperationalNetwork)),
-        },
-      ],
-      accounts: [],
-    });
-    const tx = await aeSdk.buildTx(payload);
-    const innerTx = false;
-    try {
-      const response = await (window as any).ethereum.request({
-        method: "wallet_invokeSnap",
-        params: {
-          snapId,
-          request: {
-            method: "signTransaction",
-            params: {
-              derivationPath: [`0'`, `0'`, `0'`],
-              tx: tx,
-              networkId: getNetworkId(currentOperationalNetwork),
-              innerTx,
-            },
-          },
-        },
-      });
-
-      const { txHash } = await aeSdk.api.postTransaction({
-        tx: response.signedTx,
-      });
-
-      return txHash;
-    } catch (err) {
-      console.error(err);
-      alert("Problem happened: " + (err as any).message || err);
-    }
-  }
-
-  const disconnectAccount = async () => {
+  const disconnectAccount = () => {
     setAddress(null);
+  };
+
+  const changeOperationalNetwork = (network: string) => {
+    setCurrentOperationalNetwork(network);
   };
 
   return (
@@ -178,10 +62,8 @@ export const MetamaskProvider = ({ children }: any) => {
 
 export function useMetamask() {
   const context = useContext(MetamaskContext);
-
   if (!context) {
-    throw new Error("useMetamask must be used within a MetamaskContext");
+    throw new Error("useMetamask must be used within a MetamaskProvider");
   }
-
   return context;
 }
