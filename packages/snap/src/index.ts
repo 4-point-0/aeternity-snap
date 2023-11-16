@@ -14,8 +14,8 @@ import {
   encodePublicKey,
   signMessage,
   signTransaction,
-  verifyMessage,
 } from "./utils";
+import { verifyMessage } from "./utils/crypto";
 
 module.exports.onRpcRequest = async ({ origin, request }: any) => {
   const dappOrigin = request?.params?.origin || origin;
@@ -61,8 +61,11 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
       const signed = signMessage(decodedMessage, keyPair.secretKey);
       const publicKey = encodePublicKey(keyPair.publicKey);
-      const isVerified = verifyMessage(decodedMessage, signed, publicKey);
-
+      const isVerified = verifyMessage(
+        decodedMessage,
+        signed,
+        publicKey as any,
+      );
       assertIsVerifiedMessage(isVerified);
 
       return {
