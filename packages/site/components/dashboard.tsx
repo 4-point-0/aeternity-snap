@@ -29,17 +29,28 @@ import { FaSignature } from "react-icons/fa";
 import { BsEnvelopeCheckFill } from "react-icons/bs";
 
 import base64js from "base64-js";
+import Link from "next/link";
 
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
+const CustomToastWithLink = (url: string, description: string) => (
+  <div>
+    <Link href={url}>{description}</Link>
+  </div>
+);
+
 const Dashboard = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const { address, signMessage, signTransaction, currentOperationalNetwork } =
-    useMetamask();
+  const {
+    address,
+    signMessage,
+    signAndSendTransaction,
+    currentOperationalNetwork,
+  } = useMetamask();
 
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
 
@@ -185,7 +196,7 @@ const Dashboard = () => {
       return;
     }
 
-    const txHash = await signTransaction({
+    const txHash = await signAndSendTransaction({
       tag: Tag.SpendTx,
       senderId: address,
       recipientId: recipient,
@@ -193,7 +204,14 @@ const Dashboard = () => {
       payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
     });
 
-    toast.success(txHash);
+    toast.success(
+      CustomToastWithLink(
+        currentOperationalNetwork === "testnet"
+          ? `https://${currentOperationalNetwork}.aescan.io/transactions/${txHash}`
+          : `https://aescan.io/transactions/${txHash}`,
+        "Trasanction has been sent successfully",
+      ),
+    );
 
     onClose();
 

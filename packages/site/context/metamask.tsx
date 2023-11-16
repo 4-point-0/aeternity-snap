@@ -1,3 +1,8 @@
+import {
+  getNetworkId,
+  getNetworkName,
+  getNetworkRpcUrl,
+} from "@/common/constants";
 import { AeSdk, Node } from "@aeternity/aepp-sdk";
 import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import React, { useContext, useState } from "react";
@@ -6,7 +11,7 @@ interface MetamaskContext {
   connectAccount: () => void;
   disconnectAccount: () => void;
   signMessage: (msg: string) => Promise<any>;
-  signTransaction: (payload: any) => Promise<any>;
+  signAndSendTransaction: (payload: any) => Promise<any>;
   address: string | null;
   currentOperationalNetwork: string;
   changeOperationalNetwork: any;
@@ -15,15 +20,6 @@ interface MetamaskContext {
 const MetamaskContext = React.createContext<MetamaskContext | null>(null);
 
 export const MetamaskProvider = ({ children }: any) => {
-  const snapId = `local:${"http://localhost:8080"}`;
-
-  const node = new Node("https://testnet.aeternity.io");
-
-  const aeSdk = new AeSdk({
-    nodes: [{ name: "testnet", instance: node }],
-    accounts: [],
-  });
-
   const [address, setAddress] = useState<string | null>(null);
 
   const [currentOperationalNetwork, setCurrentOperationalNetwork] =
@@ -32,6 +28,8 @@ export const MetamaskProvider = ({ children }: any) => {
   const changeOperationalNetwork = async (operationalNetwork: string) => {
     setCurrentOperationalNetwork(operationalNetwork);
   };
+
+  const snapId = `local:${"http://localhost:8080"}`;
 
   const getSnaps = async () => {
     return await (window as any).ethereum.request({
@@ -117,10 +115,18 @@ export const MetamaskProvider = ({ children }: any) => {
     }
   }
 
-  async function signTransaction(payload: TxParamsAsync) {
+  async function signAndSendTransaction(payload: TxParamsAsync) {
+    const aeSdk = new AeSdk({
+      nodes: [
+        {
+          name: getNetworkName(currentOperationalNetwork),
+          instance: new Node(getNetworkRpcUrl(currentOperationalNetwork)),
+        },
+      ],
+      accounts: [],
+    });
     const tx = await aeSdk.buildTx(payload);
     const innerTx = false;
-    const networkId = "ae_uat";
     try {
       const response = await (window as any).ethereum.request({
         method: "wallet_invokeSnap",
@@ -131,7 +137,7 @@ export const MetamaskProvider = ({ children }: any) => {
             params: {
               derivationPath: [`0'`, `0'`, `0'`],
               tx: tx,
-              networkId: networkId,
+              networkId: getNetworkId(currentOperationalNetwork),
               innerTx,
             },
           },
@@ -142,8 +148,7 @@ export const MetamaskProvider = ({ children }: any) => {
         tx: response.signedTx,
       });
 
-      // return txHash;
-      return response;
+      return txHash;
     } catch (err) {
       console.error(err);
       alert("Problem happened: " + (err as any).message || err);
@@ -161,7 +166,7 @@ export const MetamaskProvider = ({ children }: any) => {
         disconnectAccount,
         address,
         signMessage,
-        signTransaction,
+        signAndSendTransaction,
         currentOperationalNetwork,
         changeOperationalNetwork,
       }}
