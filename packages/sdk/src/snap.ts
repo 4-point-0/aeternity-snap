@@ -1,5 +1,4 @@
-import { AeSdk, Node } from "@aeternity/aepp-sdk/es";
-import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
+import { AeSdk, Node } from "@aeternity/aepp-sdk";
 import { NetworkId, getNetworkRpcUrl, networks } from "./constants";
 import AeSnapProvider from "./provider";
 import { AeSnapStatus, Maybe } from "./types";
@@ -81,9 +80,7 @@ class AeSnap {
     });
   }
 
-  public async signAndSendTransaction(
-    transaction: TxParamsAsync,
-  ): Promise<string> {
+  public async signAndSendTransaction(transaction: any): Promise<string> {
     try {
       const tx = await this.aeSdk.buildTx(transaction);
       const response: Maybe<{ publicKey: string; signedTx: string }> =
