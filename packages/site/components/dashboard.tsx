@@ -13,11 +13,11 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Snippet,
   Tab,
   Tabs,
   Textarea,
   useDisclosure,
-  Snippet,
 } from "@nextui-org/react";
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useState } from "react";
@@ -28,6 +28,7 @@ import { FaSignature } from "react-icons/fa";
 
 import { BsEnvelopeCheckFill } from "react-icons/bs";
 
+import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 import base64js from "base64-js";
 import Link from "next/link";
 
@@ -202,7 +203,7 @@ const Dashboard = () => {
       recipientId: recipient,
       amount: amountNum * 10 ** 18,
       payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
-    });
+    } as TxParamsAsync);
 
     toast.success(
       CustomToastWithLink(

@@ -1,13 +1,14 @@
-import React, { useContext, useState } from "react";
-import { AESnap } from '@aeternity-snap/sdk';
+import { AESnap, NetworkId } from "@aeternity-snap/sdk";
 import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
-import { NetworkId } from '../common/constants';
+import React, { useContext, useEffect, useState } from "react";
 
 interface MetamaskContext {
   connectAccount: () => void;
   disconnectAccount: () => void;
   signMessage: (msg: string) => Promise<any>;
-  signAndSendTransaction: (payload: TxParamsAsync) => Promise<string>;
+  signAndSendTransaction: (
+    payload: TxParamsAsync,
+  ) => Promise<string | undefined>;
   address: string | null;
   currentOperationalNetwork: string;
   changeOperationalNetwork: (network: string) => void;
@@ -17,22 +18,39 @@ const MetamaskContext = React.createContext<MetamaskContext | null>(null);
 
 export const MetamaskProvider = ({ children }: any) => {
   const [address, setAddress] = useState<string | null>(null);
-  const [currentOperationalNetwork, setCurrentOperationalNetwork] = useState<string>("testnet");
+  const [currentOperationalNetwork, setCurrentOperationalNetwork] =
+    useState<string>("testnet");
+
+  const [aeSnap, setAeSnap] = useState<AESnap | null>(null);
+
+  useEffect(() => {
+    connectAccount();
+  }, [currentOperationalNetwork]);
+
+  const getNetwork = () => {
+    if (currentOperationalNetwork === "testnet") {
+      return NetworkId.testnet;
+    } else if (currentOperationalNetwork === "mainnet") {
+      return NetworkId.mainnet;
+    }
+
+    return NetworkId.testnet;
+  };
 
   const connectAccount = async () => {
-    const aeSnap = await AESnap.connect(NetworkId.testnet);
-    const publicKey = await aeSnap.getPublicKey();
-    setAddress(publicKey);
+    setAeSnap(
+      await AESnap.connect(getNetwork(), { id: "local:http://localhost:8080" }),
+    );
+    const response = await aeSnap?.getPublicKey();
+    setAddress(response?.publicKey ?? null);
   };
 
   const signMessage = async (msg: string) => {
-    const aeSnap = await AESnap.connect(NetworkId.testnet);
-    return aeSnap.signMessage(msg);
+    return aeSnap?.signMessage(msg);
   };
 
   const signAndSendTransaction = async (payload: TxParamsAsync) => {
-    const aeSnap = await AESnap.connect(NetworkId.testnet);
-    return aeSnap.signAndSendTransaction(payload);
+    return aeSnap?.signAndSendTransaction(payload);
   };
 
   const disconnectAccount = () => {

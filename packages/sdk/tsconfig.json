@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -20,5 +19,5 @@
     ],
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "index.d.ts", "./src/constants.ts"]
+  "include": ["src", "index.d.ts"],
 }

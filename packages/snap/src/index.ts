@@ -28,7 +28,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
       assertIsBoolean(confirm);
 
       const keyPair = await deriveKeyPair(derivationPath);
-      const pubkey = encodePublicKey(keyPair.publicKey);
+      const publicKey = encodePublicKey(keyPair.publicKey);
 
       if (confirm) {
         const accepted = await renderGetPublicKey(
@@ -38,7 +38,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
         assertConfirmation(accepted);
       }
 
-      return { pubkey };
+      return { publicKey };
     }
 
     case "signMessage": {
