@@ -1,7 +1,13 @@
 "use client";
 import { useMetamask } from "@/context/metamask";
 import { shortenHash } from "@/lib/utils";
-import { Encoding, Tag, encode, verifyMessage } from "@aeternity/aepp-sdk";
+import {
+  Encoding,
+  Tag,
+  encode,
+  isAddressValid,
+  verifyMessage,
+} from "@aeternity/aepp-sdk";
 import {
   Button,
   Card,
@@ -54,6 +60,8 @@ const Dashboard = () => {
   } = useMetamask();
 
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
+  const [isValidVerifyAddress, setIsValidVerifyAddress] =
+    useState<boolean>(true);
 
   const [loading, setLoading] = useState(false);
 
@@ -64,17 +72,16 @@ const Dashboard = () => {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
 
+  const [addressVerify, setAddressVerify] = useState<string>("");
   const [messageSignature, setMessageSignature] = useState<string>("");
   const [messageSignatureVerify, setMessageSignatureVerify] =
     useState<string>("");
+  const [messageVerify, setMessageVerify] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [encodedMessage, setEncodedMessage] = useState<string>("");
 
   const checkWallet = async (address: string) => {
     try {
-      const response = await fetch(
-        `https://${currentOperationalNetwork}.aeternity.io/v3/accounts/${address}?int-as-string=false`,
-      );
+      const response = await fetchWalletInfo(address);
 
       if (!response.ok) {
         setIsValidWalletId(false);
@@ -88,11 +95,26 @@ const Dashboard = () => {
     }
   };
 
+  const fetchWalletInfo = async (address: string) => {
+    return await fetch(
+      `https://${currentOperationalNetwork}.aeternity.io/v3/accounts/${address}?int-as-string=false`,
+    );
+  };
+
   const debounceHandleSearch = useCallback(debounce(checkWallet, 2000), []);
 
   const handelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const address = e.target.value;
     debounceHandleSearch(address);
+  };
+
+  const handelAddressVerifyChange = (address: string) => {
+    if (isAddressValid(address)) {
+      setIsValidVerifyAddress(true);
+    } else {
+      setIsValidVerifyAddress(false);
+    }
+    setAddressVerify(address);
   };
 
   useEffect(() => {
@@ -224,7 +246,6 @@ const Dashboard = () => {
 
   const handleSignMessage = async () => {
     const encodedMsg = btoa(message);
-    setEncodedMessage(encodedMsg);
     const { signature } = await signMessage(encodedMsg);
     setMessageSignature(signature);
     toast.success(`The message has been signed: ${signature}`);
@@ -233,24 +254,25 @@ const Dashboard = () => {
   const handleVerifyMessage = async () => {
     try {
       setLoading(true);
-      const messageBytes = base64js.toByteArray(encodedMessage);
+      const encodedMsg = btoa(messageVerify);
+      const messageBytes = base64js.toByteArray(encodedMsg);
       let decodedMessage = "";
       try {
         decodedMessage = new TextDecoder().decode(messageBytes);
       } catch (error) {
         decodedMessage = "Unable to decode message";
       }
-      const signed = base64js.toByteArray(messageSignature);
+      const signed = base64js.toByteArray(messageSignatureVerify);
       const verifiedMessage = verifyMessage(
         decodedMessage,
         signed,
-        address as any,
+        addressVerify as any,
       );
 
       if (verifiedMessage) {
         toast.success(`The message has successfully been verified`);
       } else {
-        toast;
+        toast.error("Verification failed");
       }
     } catch (error) {
       toast.error("Verification failed");
@@ -404,12 +426,40 @@ const Dashboard = () => {
                     it was signed.
                   </p>
                 </div>
-                <div className="flex justify-center items-center">
-                  <Textarea
-                    label="Verify the message"
-                    isRequired
-                    placeholder="Enter your verification"
-                    className="max-w-xs"
+                <div className="flex justify-center items-center mb-4 ">
+                  <Input
+                    className="mt-4"
+                    type="text"
+                    label="Aeternity Address"
+                    placeholder="Enter aeternity address"
+                    labelPlacement="outside"
+                    isInvalid={isValidVerifyAddress ? false : true}
+                    errorMessage={
+                      isValidVerifyAddress
+                        ? null
+                        : "Please enter a valid wallet address"
+                    }
+                    onValueChange={handelAddressVerifyChange}
+                  />
+                </div>
+                <div className="flex justify-center items-center mb-4">
+                  <Input
+                    className="mt-4"
+                    type="text"
+                    label="Message"
+                    placeholder="Message"
+                    labelPlacement="outside"
+                    value={messageVerify ?? ""}
+                    onValueChange={setMessageVerify}
+                  />
+                </div>
+                <div className="flex justify-center items-center mb-4">
+                  <Input
+                    className="mt-5"
+                    type="text"
+                    label="Signature hash"
+                    placeholder="Hash"
+                    labelPlacement="outside"
                     value={messageSignatureVerify ?? ""}
                     onValueChange={setMessageSignatureVerify}
                   />
@@ -418,7 +468,12 @@ const Dashboard = () => {
                   <Button
                     size="sm"
                     className="font-bold"
-                    isDisabled={!message}
+                    isDisabled={
+                      !messageVerify ||
+                      !messageSignatureVerify ||
+                      !addressVerify ||
+                      !isValidVerifyAddress
+                    }
                     onPress={async () => {
                       handleVerifyMessage();
                     }}
