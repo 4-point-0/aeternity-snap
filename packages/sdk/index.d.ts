@@ -9,3 +9,8 @@ declare global {
     ethereum: MetaMaskInpageProvider;
   }
 }
+
+export * from "./src/constants";
+export { default as AeSnapProvider } from "./src/provider";
+export { default as AESnap } from "./src/snap";
+export * from "./src/types";
