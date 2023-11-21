@@ -39,8 +39,6 @@ class AeSnap {
       await snap.install();
     }
 
-    await snap.provider.connectSnap(snap.id);
-
     return snap;
   }
 

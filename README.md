@@ -36,11 +36,9 @@ The `@aeternity-snap/plugin` itself does not have internet access. The plugin on
 
 ### ⚡️ Plugin features:
 
-TODO
-
-### ☑️ Details of what the user is signing.
-
-List of transaction actions, confirmations of new permissions, additional information. Unfortunately at the moment snap-ui is not very rich, but we are doing our best to make the UI/UX of the plugin better for the user.
+- Connect to dapp
+- Sign transaction
+- Sign message
 
 ### 🔒 Safe and secure.
 
@@ -52,19 +50,28 @@ Thanks to the preview of incoming transactions, you know exactly what you are si
 
 ### @aeternity-snap/sdk
 
-Interact with Aeternity Snap using the js library, it's the easiest way to give Metamask users access to the world of Aeternity Protocol
+Interact with Aeternity Snap using the SDK, it's the easiest way to give Metamask users access to the world of Aeternity Protocol
 
 ```ts
-import { AeternitySnapAccount } from '@aeternity-snap/sdk';
+import { AESnap, NetworkId } from "@aeternity-snap/sdk";
+import { Encoding, Tag, encode } from "@aeternity/aepp-sdk";
+import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
 
 // Install snap and connect wallet
-const account = await AeternitySnapAccount.connect('mainnet');
-
-const results = await account.signAndSendTransaction({
-  tag: Tag.SpendTx,
-  senderId: address,
-  recipientId: recipient,
-  amount: 0.1 * 10 ** 18,
-  payload: encode(new TextEncoder().encode(''), Encoding.Bytearray),
+const snap = await AESnap.connect(NetworkId.testnet, {
+  id: "local:http://localhost:8080",
 });
+
+// Get public key
+const response = await snap?.getPublicKey();
+console.log(response.publicKey ?? "No public key");
+
+// Send transaction
+const results = await snap.signAndSendTransaction({
+  tag: Tag.SpendTx,
+  senderId: "",
+  recipientId: "",
+  amount: 0.1 * 10 ** 18,
+  payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
+} as TxParamsAsync);
 ```
