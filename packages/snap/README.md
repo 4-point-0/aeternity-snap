@@ -7,19 +7,19 @@ The Aeternity Wallet Snap is a MetaMask extension that has Aeternity capabilitie
 Install the latest version of the Snaps CLI
 
 ```bash
-npm install -g @metamask/snaps-cli
+yarn add @metamask/snaps-cli
 ```
 
 Install the dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 Build and start the local development server
 
 ```bash
-npm start
+yarn start
 ```
 
 ## Using the snap

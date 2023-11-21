@@ -7,8 +7,8 @@ const Welcome = () => {
 
   return (
     <div className="">
-      <div className="mt-[10%] flex items-center justify-center">
-        <div className="w-2/5">
+      <div className="mt-[1%] flex items-center justify-center md:mt-[10%]">
+        <div className="w-5/5 md:w-2/5">
           <Card className="mt-7 items-center gap-6 drop-shadow-md p-10">
             <div className="text-center">
               <div className="flex justify-between items-center">
@@ -38,7 +38,7 @@ const Welcome = () => {
           </Card>
         </div>
       </div>
-      <div className="flex justify-center mt-[3%] space-x-10 sm:space-x-5">
+      <div className="justify-center mt-[5%] space-x-5 flex md:space-x-10 md:mt-[3%] ">
         <a href="" className="text-sm text-gray-500">
           GitHub
         </a>
@@ -55,7 +55,7 @@ const Welcome = () => {
           FAQ&rsquo;s
         </a>
       </div>
-      <div className="mt-[3%] flex justify-center">
+      <div className="mt-[6%] flex justify-center md:mt-[3%]">
         <p className="text-center text-sm text-gray-500">Powered by</p>
         <span className="mr-1"></span>
         <a

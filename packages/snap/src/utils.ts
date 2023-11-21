@@ -1,10 +1,8 @@
-var Buffer = require("buffer/").Buffer;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const blake = require("blakejs/blake2b.js");
 import { encode as bs58Encode } from "bs58";
-
 import { encode as varuintEncode } from "varuint-bitcoin";
 import nacl from "tweetnacl";
+import { Buffer } from "buffer/";
+import { blake2b } from "blakejs";
 import { buildTx } from "./tx/builder";
 import { Tag } from "./tx/builder/constants";
 import { getBufferToSign } from "./account/Memory";
@@ -25,26 +23,22 @@ export const hexToBytes = (hex: any) => {
   return Uint8Array.from(bytes);
 };
 
-export const encodePublicKey = (value: any) => {
-  return "ak_" + bs58Encode(addChecksum(value));
-};
+export const encodePublicKey = (value: any) =>
+  `ak_${bs58Encode(addChecksum(value))}`;
 
-export function hash(input: any) {
-  return Buffer.from(blake.blake2b(input, undefined, 32));
-}
+export const hash = (input: any) => {
+  return Buffer.from(blake2b(input, undefined, 32));
+};
 
 export const messageToHash = (message: any) => {
   const p = Buffer.from("aeternity Signed Message:\n", "utf8");
   const msg = Buffer.from(message, "utf8");
   return hash(
-    concatBuffers([varuintEncode(p.length), p, varuintEncode(msg.length), msg])
+    concatBuffers([varuintEncode(p.length), p, varuintEncode(msg.length), msg]),
   );
 };
 
-export const sign = (
-  data: string | Uint8Array,
-  privateKey: string | Uint8Array
-): Uint8Array => {
+export const sign = (data: Uint8Array, privateKey: Uint8Array): Uint8Array => {
   return nacl.sign.detached(Buffer.from(data), Buffer.from(privateKey));
 };
 
@@ -69,16 +63,16 @@ export const signTransaction = (
     innerTx,
     networkId,
     ...options
-  }: { innerTx?: boolean; networkId?: string } = {}
+  }: { innerTx?: boolean; networkId?: string } = {},
 ): Encoded.Transaction => {
-  if (networkId == null) {
+  if (networkId === null) {
     throw new ArgumentError("networkId", "provided", networkId);
   }
   const rlpBinaryTx = decode(transaction);
   const txWithNetworkId = getBufferToSign(
     transaction,
+    innerTx === true,
     networkId,
-    innerTx === true
   );
 
   const signatures = [sign(txWithNetworkId, (options as any).privateKey)];

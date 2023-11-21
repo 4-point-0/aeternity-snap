@@ -1,0 +1,17 @@
+import { OperationParameter, OperationURLParameter, OperationQueryParameter } from "@azure/core-client";
+export declare const accept: OperationParameter;
+export declare const $host: OperationURLParameter;
+export declare const intAsString: OperationQueryParameter;
+export declare const hash: OperationURLParameter;
+export declare const height: OperationURLParameter;
+export declare const index: OperationURLParameter;
+export declare const pubkey: OperationURLParameter;
+export declare const strategy: OperationQueryParameter;
+export declare const contentType: OperationParameter;
+export declare const body: OperationParameter;
+export declare const body1: OperationParameter;
+export declare const from: OperationQueryParameter;
+export declare const limit: OperationQueryParameter;
+export declare const type: OperationQueryParameter;
+export declare const queryId: OperationURLParameter;
+export declare const name: OperationURLParameter;

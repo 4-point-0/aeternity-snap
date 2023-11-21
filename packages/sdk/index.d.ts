@@ -1,5 +1,5 @@
 /* eslint-disable*/
-import { MetaMaskInpageProvider } from '@metamask/providers';
+import { MetaMaskInpageProvider } from "@metamask/providers";
 
 /*
  * Window type extension to support ethereum
@@ -10,11 +10,7 @@ declare global {
   }
 }
 
-export type GetSnapsResponse = Record<string, Snap>;
-
-export type Snap = {
-  permissionName: string;
-  id: string;
-  version: string;
-  initialPermissions: Record<string, unknown>;
-};
+export * from "./src/constants";
+export { default as AeSnapProvider } from "./src/provider";
+export { default as AESnap } from "./src/snap";
+export * from "./src/types";

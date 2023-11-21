@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -8,7 +7,6 @@
     "strict": true,
     "rootDir": "./src",
     "outDir": "./build",
-    "declaration": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -21,5 +19,5 @@
     ],
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "index.d.ts"]
+  "include": ["src", "index.d.ts"],
 }

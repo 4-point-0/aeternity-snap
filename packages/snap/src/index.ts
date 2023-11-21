@@ -1,6 +1,10 @@
 import base64js from "base64-js";
 import { deriveKeyPair } from "./privateKey";
-import { renderGetPublicKey, renderSignMessage } from "./ui";
+import {
+  renderGetPublicKey,
+  renderSignMessage,
+  renderSignTransaction,
+} from "./ui";
 import {
   assertConfirmation,
   assertInput,
@@ -10,12 +14,15 @@ import {
   encodePublicKey,
   signMessage,
   signTransaction,
-  verifyMessage,
 } from "./utils";
+import { verifyMessage } from "./utils/crypto";
 
 module.exports.onRpcRequest = async ({ origin, request }: any) => {
-  const dappOrigin = request?.params?.origin || origin;
-  const dappHost = new URL(dappOrigin)?.host;
+  if (!origin) {
+    throw new Error("Invalid origin");
+  }
+
+  const dappHost = new URL(origin)?.host;
 
   switch (request.method) {
     case "getPublicKey": {
@@ -24,7 +31,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
       assertIsBoolean(confirm);
 
       const keyPair = await deriveKeyPair(derivationPath);
-      const pubkey = encodePublicKey(keyPair.publicKey);
+      const publicKey = encodePublicKey(keyPair.publicKey);
 
       if (confirm) {
         const accepted = await renderGetPublicKey(
@@ -34,7 +41,7 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
         assertConfirmation(accepted);
       }
 
-      return { pubkey };
+      return { publicKey };
     }
 
     case "signMessage": {
@@ -57,8 +64,11 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
       const signed = signMessage(decodedMessage, keyPair.secretKey);
       const publicKey = encodePublicKey(keyPair.publicKey);
-      const isVerified = verifyMessage(decodedMessage, signed, publicKey);
-
+      const isVerified = verifyMessage(
+        decodedMessage,
+        signed,
+        publicKey as any,
+      );
       assertIsVerifiedMessage(isVerified);
 
       return {
@@ -69,6 +79,9 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
     case "signTransaction": {
       const { derivationPath, tx, networkId, isInnerTx } = request.params || {};
+
+      const accepted = await renderSignTransaction(dappHost, tx);
+      assertConfirmation(accepted);
 
       const keyPair = await deriveKeyPair(derivationPath);
       const options = { privateKey: keyPair.secretKey };

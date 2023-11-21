@@ -36,7 +36,8 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules/
+*/node_modules/
+*/*/node_modules/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -70,10 +71,13 @@ node_modules/
 .vscode-test
 
 # yarn v2
-.yarn/cache
+.yarn/cache*
+packages/sdk/.yarn/cache
+packages/site/.yarn/cache
+packages/snap/.yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
-.yarn/install-state.gz
+install-state*
 .pnp.*
 
 # dependencies
@@ -131,3 +135,4 @@ yarn-error.log*
 
 .env
 .next
+
