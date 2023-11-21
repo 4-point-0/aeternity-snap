@@ -1,6 +1,6 @@
 import { AESnap, NetworkId } from "@aeternity-snap/sdk";
 import { TxParamsAsync } from "@aeternity/aepp-sdk/es/tx/builder/schema";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 interface MetamaskContext {
   connectAccount: () => void;
@@ -23,9 +23,9 @@ export const MetamaskProvider = ({ children }: any) => {
 
   const [aeSnap, setAeSnap] = useState<AESnap | null>(null);
 
-  // useEffect(() => {
-  //   connectAccount();
-  // }, [currentOperationalNetwork]);
+  useEffect(() => {
+    connectAccount();
+  }, [currentOperationalNetwork]);
 
   const getNetwork = () => {
     if (currentOperationalNetwork === "testnet") {
@@ -38,10 +38,11 @@ export const MetamaskProvider = ({ children }: any) => {
   };
 
   const connectAccount = async () => {
-    setAeSnap(
-      await AESnap.connect(getNetwork(), { id: "local:http://localhost:8080" }),
-    );
-    const response = await aeSnap?.getPublicKey();
+    const snap = await AESnap.connect(getNetwork(), {
+      id: "local:http://localhost:8080",
+    });
+    setAeSnap(snap);
+    const response = await snap?.getPublicKey();
     setAddress(response?.publicKey ?? null);
   };
 
