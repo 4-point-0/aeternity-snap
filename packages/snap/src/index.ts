@@ -18,8 +18,11 @@ import {
 import { verifyMessage } from "./utils/crypto";
 
 module.exports.onRpcRequest = async ({ origin, request }: any) => {
-  const dappOrigin = request?.params?.origin || origin;
-  const dappHost = new URL(dappOrigin)?.host;
+  if (!origin) {
+    throw new Error("Invalid origin");
+  }
+
+  const dappHost = new URL(origin)?.host;
 
   switch (request.method) {
     case "getPublicKey": {
