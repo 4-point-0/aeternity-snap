@@ -12,15 +12,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aeternity-snap/sdk@file:../sdk/aeternity-snap-sdk-0.0.1.tgz::locator=site%40workspace%3A.":
+"@aeternity-snap/sdk@file:../sdk/package10.tgz::locator=site%40workspace%3A.":
   version: 0.0.1
-  resolution: "@aeternity-snap/sdk@file:../sdk/aeternity-snap-sdk-0.0.1.tgz::locator=site%40workspace%3A."
+  resolution: "@aeternity-snap/sdk@file:../sdk/package10.tgz::locator=site%40workspace%3A."
   dependencies:
     "@aeternity/aepp-sdk": ^13.2.2
     "@metamask/providers": ^13.1.0
   peerDependencies:
     "@aeternity/aepp-sdk": ^13.2.2
-  checksum: 704ba92883af96d885837849b895afaf9fab5ce1ac6e6733e5a045de4564b229e0193a3edbdc5f87302ded1109af263d91ca123e181ad416825ca39094cc93e5
+  checksum: caed47d63db281105e19a274ed2781740ba6ea1ef894d799702628b95e283343e5bc82d11606e9b9caa10eba7849360b0fcd944e90a0aebdc06a94c5dae009b6
   languageName: node
   linkType: hard
 
@@ -7801,7 +7801,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site@workspace:."
   dependencies:
-    "@aeternity-snap/sdk": "file:../sdk/aeternity-snap-sdk-0.0.1.tgz"
+    "@aeternity-snap/sdk": "file:../sdk/package10.tgz"
     "@aeternity/aepp-sdk": ^13.2.2
     "@nextui-org/button": 2.0.18
     "@nextui-org/code": 2.0.16
