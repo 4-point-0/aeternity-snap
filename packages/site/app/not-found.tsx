@@ -12,8 +12,8 @@ export default function NotFound() {
             Something&lsquo;s missing.
           </p>
           <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-            Sorry, we can&lsquo;t find that page. You'll find lots to explore on
-            the home page.{" "}
+            Sorry, we can&lsquo;t find that page. You&lsquo;ll find lots to
+            explore on the home page.{" "}
           </p>
           <a
             href="/"
