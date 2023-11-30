@@ -370,10 +370,10 @@ const Dashboard = () => {
                   </h1>
                   <p className="text-sm">
                     The process of signing involves creating a digital signature
-                    using the sender's private key and the original message.
-                    This signature proves that the sender is the owner of the
-                    private key and therefore the associated public key and
-                    blockchain address.
+                    using the sender&lsquo;s private key and the original
+                    message. This signature proves that the sender is the owner
+                    of the private key and therefore the associated public key
+                    and blockchain address.
                   </p>
                 </div>
 
@@ -419,7 +419,7 @@ const Dashboard = () => {
                   <p className="text-sm">
                     When the message is received, other network participants can
                     verify the authenticity of the message. They do this by
-                    using the sender's public key to check the digital
+                    using the sender&lsquo;s public key to check the digital
                     signature. If the signature is valid, it confirms that the
                     message was indeed signed by the owner of the corresponding
                     private key and that the message has not been altered since
