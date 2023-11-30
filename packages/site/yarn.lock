@@ -6373,7 +6373,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^2.0.0":
+"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.3":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
   dependencies:
@@ -6780,6 +6780,17 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: c869b0014ae921ada3bf22301985027ec320aebcd6aa9c16e8afbded68bb8def5874cca034c680e8c351a79578f1e514971d02777f6f0a5a1d7290f25970ac0d
+  languageName: node
+  linkType: hard
+
+"nextjs-node-loader@npm:^1.1.5-alpha.0":
+  version: 1.1.5-alpha.0
+  resolution: "nextjs-node-loader@npm:1.1.5-alpha.0"
+  dependencies:
+    loader-utils: ^2.0.3
+  peerDependencies:
+    webpack: ^5.76.0
+  checksum: 9bf76ce975333e4e26dfe5e60dc32ec85b49807c79d538e2e34fb4b2fe49fce9ed0977b50ce6f4bb47960de24651de16681d8bbb523cc9f343ab5bec3b622d82
   languageName: node
   linkType: hard
 
@@ -7815,6 +7826,7 @@ __metadata:
     lodash: ^4.17.21
     next: ^13.5.6
     next-themes: ^0.2.1
+    nextjs-node-loader: ^1.1.5-alpha.0
     node-loader: ^2.0.0
     postcss: 8.4.29
     qrcode.react: ^3.1.0

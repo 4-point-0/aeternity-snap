@@ -37,6 +37,7 @@
     "lodash": "^4.17.21",
     "next": "^13.5.6",
     "next-themes": "^0.2.1",
+    "nextjs-node-loader": "^1.1.5-alpha.0",
     "postcss": "8.4.29",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",

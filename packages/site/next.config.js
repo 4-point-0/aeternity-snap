@@ -1,13 +1,13 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   webpack: (config, { dev, isServer, webpack, nextRuntime }) => {
     config.module.rules.push({
       test: /\.node$/,
-      use:  "node-loader",
+      use: [
+        {
+          loader: "nextjs-node-loader",
+        },
+      ],
     });
-
     return config;
   },
 };
-
-module.exports = nextConfig
