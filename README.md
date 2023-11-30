@@ -4,6 +4,10 @@
 
 **Add Snap:** https://aeternity-snap.vercel.io
 
+# Important
+
+To use this dapp you need to install [Metamask Flask](https://metamask.io/flask/). This version of metamask needs to be installed in a separate browser which doesn't have the regular Metamask installed.
+
 🔄 Metamask doesn't automatically offer to install the new version, you need to do it manually:
 
 1. Open metamask
