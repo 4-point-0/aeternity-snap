@@ -2,7 +2,7 @@
 
 **Manage account and sign transactions for Aeternity Protocol blockchain.**
 
-**Add Snap:** https://aeternity-snap.vercel.io
+**Add Snap:** https://aeternity-snap.vercel.app/
 
 # Important
 
@@ -16,7 +16,7 @@ To use this dapp you need to install [Metamask Flask](https://metamask.io/flask/
 4. Select Aeternity Snap
 5. Remove
 
-**Demo (testnet/mainnet):** https://aeternity-snap.vercel.io
+**Demo (testnet/mainnet):** https://aeternity-snap.vercel.app/
 
 ### Get Started
 

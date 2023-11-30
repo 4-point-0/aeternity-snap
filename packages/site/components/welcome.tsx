@@ -39,19 +39,31 @@ const Welcome = () => {
         </div>
       </div>
       <div className="justify-center mt-[5%] space-x-5 flex md:space-x-10 md:mt-[3%] ">
-        <a href="" className="text-sm text-gray-500">
+        <a
+          href="https://github.com/4-point-0/aeternity-snap"
+          className="text-sm text-gray-500"
+        >
           GitHub
         </a>
         <div className="border-l-small"></div>
-        <a href="" className="text-sm text-gray-500">
+        <a
+          href="https://github.com/4-point-0/aeternity-snap"
+          className="text-sm text-gray-500"
+        >
           Privacy Policy
         </a>
         <div className="border-l-small"></div>
-        <a href="" className="text-sm text-gray-500">
+        <a
+          href="https://github.com/4-point-0/aeternity-snap"
+          className="text-sm text-gray-500"
+        >
           Terms of service
         </a>
         <div className="border-l-small"></div>
-        <a href="" className="text-sm text-gray-500">
+        <a
+          href="https://github.com/4-point-0/aeternity-snap"
+          className="text-sm text-gray-500"
+        >
           FAQ&rsquo;s
         </a>
       </div>
