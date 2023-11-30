@@ -21,7 +21,7 @@
     "@nextui-org/snippet": "2.0.22",
     "@nextui-org/switch": "2.0.18",
     "@nextui-org/system": "2.0.7",
-    "@nextui-org/theme": "2.1.6",
+    "@nextui-org/theme": "^2.1.17",
     "@phosphor-icons/react": "^2.0.13",
     "@react-aria/ssr": "^3.7.1",
     "@react-aria/visually-hidden": "^3.8.3",
@@ -32,7 +32,7 @@
     "clsx": "^2.0.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
-    "framer-motion": "^10.16.2",
+    "framer-motion": "^10.16.8",
     "intl-messageformat": "^10.5.0",
     "lodash": "^4.17.21",
     "next": "^13.5.6",
@@ -44,8 +44,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-toastify": "^9.1.3",
-    "tailwind-variants": "^0.1.13",
-    "tailwindcss": "3.3.3",
+    "tailwind-variants": "^0.1.18",
+    "tailwindcss": "^3.3.5",
     "typescript": "5.0.4"
   },
   "devDependencies": {
