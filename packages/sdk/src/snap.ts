@@ -15,7 +15,7 @@ class AeSnap {
     options?: { id: string; provider?: AeSnapProvider },
   ) {
     this.provider = options?.provider ?? new AeSnapProvider();
-    this.id = options?.id ?? "npm:@aeternity-snap/snap";
+    this.id = options?.id ?? "npm:@aeternity-snap/plugin";
 
     const node = new Node(getNetworkRpcUrl(networkId));
     this.aeSdk = new AeSdk({

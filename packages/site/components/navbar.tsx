@@ -1,36 +1,35 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useMetamask } from "@/context/metamask";
 import {
+  Button,
+  Card,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Navbar,
   NavbarBrand,
-  NavbarMenuToggle,
-  NavbarMenuItem,
-  NavbarMenu,
   NavbarContent,
   NavbarItem,
-  Link,
-  Button,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
   Popover,
+  PopoverContent,
   PopoverTrigger,
   Snippet,
-  Card,
-  PopoverContent,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
 } from "@nextui-org/react";
 import { useTheme } from "next-themes";
+import React from "react";
 import { ThemeSwitch } from "./theme-switch";
-import { useMetamask } from "@/context/metamask";
 
 import { shortenAddress } from "@/lib/utils";
 import { SignOut } from "@phosphor-icons/react";
+import { QRCodeSVG } from "qrcode.react";
+import { useMemo, useState } from "react";
 import { ImQrcode } from "react-icons/im";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import QRCode from "react-qr-code";
-import { useMemo, useState } from "react";
 
 export const NavigationBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -102,7 +101,7 @@ export const NavigationBar = () => {
               <PopoverContent className="w-[240px] p-0">
                 {(titleProps) => (
                   <Card className="p-4 bg-white">
-                    <QRCode
+                    <QRCodeSVG
                       size={256}
                       style={{
                         height: "auto",
@@ -124,9 +123,9 @@ export const NavigationBar = () => {
                 <Button
                   variant="solid"
                   className="capitalize"
-                  onClick={changeOperationalNetwork(
-                    selectedValue.toLowerCase(),
-                  )}
+                  onPress={() =>
+                    changeOperationalNetwork(selectedValue.toLowerCase())
+                  }
                 >
                   {selectedValue} <MdKeyboardArrowDown />
                 </Button>
@@ -186,7 +185,7 @@ export const NavigationBar = () => {
                   <PopoverContent className="w-[240px] p-0 mt-2">
                     {(titleProps) => (
                       <Card className="p-4 bg-white">
-                        <QRCode
+                        <QRCodeSVG
                           size={256}
                           style={{
                             height: "auto",
@@ -210,9 +209,9 @@ export const NavigationBar = () => {
                     <Button
                       variant="solid"
                       className="capitalize"
-                      onClick={changeOperationalNetwork(
-                        selectedValue.toLowerCase(),
-                      )}
+                      onClick={() =>
+                        changeOperationalNetwork(selectedValue.toLowerCase())
+                      }
                     >
                       {selectedValue} <MdKeyboardArrowDown />
                     </Button>

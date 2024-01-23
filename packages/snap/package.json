@@ -1,6 +1,6 @@
 {
   "name": "@aeternity-snap/plugin",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
   "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
@@ -12,7 +12,7 @@
   "author": "4pto Developers <dev@4pto.io>",
   "main": "src/index.ts",
   "files": [
-    "dist/",
+    "dist/bundle.js",
     "logo.svg",
     "snap.manifest.json"
   ],
