@@ -47,23 +47,20 @@ const Welcome = () => {
         </a>
         <div className="border-l-small"></div>
         <a
-          href="https://github.com/4-point-0/aeternity-snap"
+          href="/documents/aeternity-privacy-policy.pdf"
           className="text-sm text-gray-500"
         >
           Privacy Policy
         </a>
         <div className="border-l-small"></div>
         <a
-          href="https://github.com/4-point-0/aeternity-snap"
+          href="/documents/terms-of-service-aeternity.pdf"
           className="text-sm text-gray-500"
         >
           Terms of service
         </a>
         <div className="border-l-small"></div>
-        <a
-          href="https://github.com/4-point-0/aeternity-snap"
-          className="text-sm text-gray-500"
-        >
+        <a href="/questions" className="text-sm text-gray-500">
           FAQ&rsquo;s
         </a>
       </div>
