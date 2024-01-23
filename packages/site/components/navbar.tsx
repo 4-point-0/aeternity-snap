@@ -26,7 +26,7 @@ import { ThemeSwitch } from "./theme-switch";
 
 import { shortenAddress } from "@/lib/utils";
 import { SignOut } from "@phosphor-icons/react";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import { useMemo, useState } from "react";
 import { ImQrcode } from "react-icons/im";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -101,7 +101,7 @@ export const NavigationBar = () => {
               <PopoverContent className="w-[240px] p-0">
                 {(titleProps) => (
                   <Card className="p-4 bg-white">
-                    <QRCodeSVG
+                    <QRCodeCanvas
                       size={256}
                       style={{
                         height: "auto",
@@ -109,7 +109,6 @@ export const NavigationBar = () => {
                         width: "100%",
                       }}
                       value={address ?? ""}
-                      viewBox={`0 0 256 256`}
                     />
                   </Card>
                 )}
@@ -185,7 +184,7 @@ export const NavigationBar = () => {
                   <PopoverContent className="w-[240px] p-0 mt-2">
                     {(titleProps) => (
                       <Card className="p-4 bg-white">
-                        <QRCodeSVG
+                        <QRCodeCanvas
                           size={256}
                           style={{
                             height: "auto",
@@ -193,7 +192,6 @@ export const NavigationBar = () => {
                             width: "100%",
                           }}
                           value={address ?? ""}
-                          viewBox={`0 0 256 256`}
                         />
                       </Card>
                     )}

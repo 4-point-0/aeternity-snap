@@ -60,7 +60,7 @@ const Welcome = () => {
           Terms of service
         </a>
         <div className="border-l-small"></div>
-        <a href="/questions" className="text-sm text-gray-500">
+        <a href="/faqs" className="text-sm text-gray-500">
           FAQ&rsquo;s
         </a>
       </div>
