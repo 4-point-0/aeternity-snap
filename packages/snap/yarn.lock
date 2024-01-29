@@ -21,6 +21,7 @@ __metadata:
     bs58: ^5.0.0
     buffer: ^6.0.3
     canonicalize: ^2.0.0
+    js-sha256: ^0.11.0
     rlp: ^3.0.0
     sha.js: ^2.4.11
     tweetnacl: ^1.0.3
@@ -4481,6 +4482,13 @@ __metadata:
     merge-stream: ^2.0.0
     supports-color: ^8.0.0
   checksum: 98cd68b696781caed61c983a3ee30bf880b5bd021c01d98f47b143d4362b85d0737f8523761e2713d45e18b4f9a2b98af1eaee77afade4111bb65c77d6f7c980
+  languageName: node
+  linkType: hard
+
+"js-sha256@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "js-sha256@npm:0.11.0"
+  checksum: 742d34a0c6eb15247309f1c74889b5a51df01a96e4307375b420fbe973f2f25585012b4d3c8fa52a1b18546153d12587e6463bb725dc1bc58686da03e892c334
   languageName: node
   linkType: hard
 
