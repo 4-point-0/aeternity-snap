@@ -38,7 +38,9 @@ export const MetamaskProvider = ({ children }: any) => {
   };
 
   const connectAccount = async () => {
-    const snap = await AESnap.connect(getNetwork());
+    const snap = await AESnap.connect(getNetwork(), {
+      id: `local:http://localhost:8080`,
+    });
     setAeSnap(snap);
     const response = await snap?.getPublicKey();
     setAddress(response?.publicKey ?? null);
