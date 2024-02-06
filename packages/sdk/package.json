@@ -1,6 +1,6 @@
 {
   "name": "@aeternity-snap/sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
   "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
