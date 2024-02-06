@@ -36,13 +36,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aeternity-snap/sdk@^0.0.2, @aeternity-snap/sdk@workspace:packages/sdk":
+"@aeternity-snap/sdk@workspace:^, @aeternity-snap/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@aeternity-snap/sdk@workspace:packages/sdk"
   dependencies:
     "@aeternity/aepp-sdk": ^13.2.2
     "@metamask/providers": ^13.1.0
-    typescript: ^5.3.3
   peerDependencies:
     "@aeternity/aepp-sdk": ^13.2.2
   languageName: unknown
@@ -7264,6 +7263,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "clsx@npm:2.1.0"
+  checksum: 43fefc29b6b49c9476fbce4f8b1cc75c27b67747738e598e6651dd40d63692135dc60b18fa1c5b78a2a9ba8ae6fd2055a068924b94e20b42039bd53b78b98e1d
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^1.9.0":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
@@ -11759,15 +11765,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-toastify@npm:^9.1.3":
-  version: 9.1.3
-  resolution: "react-toastify@npm:9.1.3"
+"react-toastify@npm:^10.0.4":
+  version: 10.0.4
+  resolution: "react-toastify@npm:10.0.4"
   dependencies:
-    clsx: ^1.1.1
+    clsx: ^2.1.0
   peerDependencies:
     react: ">=16"
     react-dom: ">=16"
-  checksum: e8bd92c5cbf831b43a042644ab9bc69abe6ceb3ce91ba71f5cd2d8b6a2c9885ca52770e1f1ba64c5632607f6df962db344a26c7fba57606faf5aa0e7bfc8535f
+  checksum: fea1b6924f8f15cd2b5d27df0d1a4aec40321080d00fb12188d9fb14f7249554bad591da0a500024424685bc81576a6b04e4190b2a4e9b3f9054c73fff25db6a
   languageName: node
   linkType: hard
 
@@ -12375,7 +12381,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site@workspace:packages/site"
   dependencies:
-    "@aeternity-snap/sdk": ^0.0.2
+    "@aeternity-snap/sdk": "workspace:^"
     "@aeternity/aepp-sdk": ^13.2.2
     "@nextui-org/button": 2.0.18
     "@nextui-org/code": 2.0.16
@@ -12410,7 +12416,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-icons: ^4.11.0
-    react-toastify: ^9.1.3
+    react-toastify: ^10.0.4
     tailwind-variants: ^0.1.18
     tailwindcss: ^3.3.5
     typescript: 5.0.4
@@ -13281,16 +13287,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3":
-  version: 5.3.3
-  resolution: "typescript@npm:5.3.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 2007ccb6e51bbbf6fde0a78099efe04dc1c3dfbdff04ca3b6a8bc717991862b39fd6126c0c3ebf2d2d98ac5e960bcaa873826bb2bb241f14277034148f41f6a2
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
   resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
@@ -13308,16 +13304,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
-  version: 5.3.3
-  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=14eedb"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: f61375590b3162599f0f0d5b8737877ac0a7bc52761dbb585d67e7b8753a3a4c42d9a554c4cc929f591ffcf3a2b0602f65ae3ce74714fd5652623a816862b610
   languageName: node
   linkType: hard
 
