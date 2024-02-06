@@ -22,6 +22,7 @@ __metadata:
     "@metamask/snaps-cli": ^3.0.1
     "@metamask/snaps-ui": ^0.32.2
     "@noble/hashes": ^1.3.1
+    base64-js: ^1.5.1
     bignumber.js: ^9.1.2
     blakejs: ^1.2.1
     bs58: ^5.0.0
@@ -34,12 +35,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aeternity-snap/sdk@workspace:packages/sdk":
+"@aeternity-snap/sdk@^0.0.1, @aeternity-snap/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@aeternity-snap/sdk@workspace:packages/sdk"
   dependencies:
     "@aeternity/aepp-sdk": ^13.2.2
     "@metamask/providers": ^13.1.0
+  peerDependencies:
+    "@aeternity/aepp-sdk": ^13.2.2
   languageName: unknown
   linkType: soft
 
@@ -6597,7 +6600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1":
+"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -10239,7 +10242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^2.0.0":
+"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.3":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
   dependencies:
@@ -10815,6 +10818,17 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: c869b0014ae921ada3bf22301985027ec320aebcd6aa9c16e8afbded68bb8def5874cca034c680e8c351a79578f1e514971d02777f6f0a5a1d7290f25970ac0d
+  languageName: node
+  linkType: hard
+
+"nextjs-node-loader@npm:^1.1.5-alpha.0":
+  version: 1.1.5-alpha.0
+  resolution: "nextjs-node-loader@npm:1.1.5-alpha.0"
+  dependencies:
+    loader-utils: ^2.0.3
+  peerDependencies:
+    webpack: ^5.76.0
+  checksum: 9bf76ce975333e4e26dfe5e60dc32ec85b49807c79d538e2e34fb4b2fe49fce9ed0977b50ce6f4bb47960de24651de16681d8bbb523cc9f343ab5bec3b622d82
   languageName: node
   linkType: hard
 
@@ -11559,10 +11573,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qr.js@npm:0.0.0":
-  version: 0.0.0
-  resolution: "qr.js@npm:0.0.0"
-  checksum: 5ac6c393967bdeaa660e7fd3a501a25eb538c1f6008a4d30ab2b97bbe520e5c236530090773f1578aa0a523cdaa6923c866615e21143f9e7cd22abd41c789b69
+"qrcode.react@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "qrcode.react@npm:3.1.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 94a2942ecf83f461d869adb20305ae663c6d1abe93ef2c72442b07d756ce70cf6deb6fd588dc5b382b48c6991cfde1dfd5ac9b814c1461e71d5edb2d945e67fc
   languageName: node
   linkType: hard
 
@@ -11640,22 +11656,6 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
-  languageName: node
-  linkType: hard
-
-"react-qr-code@npm:^2.0.12":
-  version: 2.0.12
-  resolution: "react-qr-code@npm:2.0.12"
-  dependencies:
-    prop-types: ^15.8.1
-    qr.js: 0.0.0
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-    react-native-svg: "*"
-  peerDependenciesMeta:
-    react-native-svg:
-      optional: true
-  checksum: b7bad40d7d5f04f7ff336ae499920dd5ea0e7616ed7fec5f849e54f8f26b5e4acd1ba8e69198be8617dc7fecdf36cf4302c99ff74885320b55bb95d19a09de7c
   languageName: node
   linkType: hard
 
@@ -12340,6 +12340,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site@workspace:packages/site"
   dependencies:
+    "@aeternity-snap/sdk": ^0.0.1
     "@aeternity/aepp-sdk": ^13.2.2
     "@nextui-org/button": 2.0.18
     "@nextui-org/code": 2.0.16
@@ -12367,12 +12368,13 @@ __metadata:
     lodash: ^4.17.21
     next: ^13.5.6
     next-themes: ^0.2.1
+    nextjs-node-loader: ^1.1.5-alpha.0
     node-loader: ^2.0.0
     postcss: 8.4.29
+    qrcode.react: ^3.1.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-icons: ^4.11.0
-    react-qr-code: ^2.0.12
     react-toastify: ^9.1.3
     tailwind-variants: ^0.1.13
     tailwindcss: 3.3.3
