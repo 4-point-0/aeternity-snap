@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Aeternity metamask snap.",
   "proposedName": "Aeternity Wallet",
   "repository": {
@@ -27,11 +27,7 @@
     "endowment:network-access": {},
     "snap_getBip32Entropy": [
       {
-        "path": [
-          "m",
-          "44'",
-          "457'"
-        ],
+        "path": ["m", "44'", "457'"],
         "curve": "ed25519"
       }
     ]

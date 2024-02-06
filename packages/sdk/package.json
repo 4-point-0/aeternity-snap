@@ -1,16 +1,15 @@
 {
   "name": "@aeternity-snap/sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
-  "author": "4pto Developers <dev@4pto.io>",
-  "license": "ISC",
+  "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/4-point-0/aeternity-snap.git"
   },
-  "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
-  "packageManager": "yarn@3.2.1",
+  "license": "ISC",
+  "author": "4pto Developers <dev@4pto.io>",
   "exports": {
     ".": "./build/index.js"
   },
@@ -26,5 +25,6 @@
   },
   "peerDependencies": {
     "@aeternity/aepp-sdk": "^13.2.2"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
