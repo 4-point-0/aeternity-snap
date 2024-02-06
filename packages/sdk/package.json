@@ -1,6 +1,6 @@
 {
   "name": "@aeternity-snap/sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
   "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
@@ -20,8 +20,7 @@
   },
   "dependencies": {
     "@aeternity/aepp-sdk": "^13.2.2",
-    "@metamask/providers": "^13.1.0",
-    "typescript": "^5.3.3"
+    "@metamask/providers": "^13.1.0"
   },
   "peerDependencies": {
     "@aeternity/aepp-sdk": "^13.2.2"
