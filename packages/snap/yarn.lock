@@ -9,6 +9,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aeternity-snap/plugin@workspace:."
   dependencies:
+    "@aeternity/aepp-calldata": ^1.6.0
     "@azure/core-client": ^1.7.3
     "@babel/runtime": ^7.21.5
     "@metamask/key-tree": ^7.0.0
@@ -27,6 +28,19 @@ __metadata:
     varuint-bitcoin: ^1.1.2
   languageName: unknown
   linkType: soft
+
+"@aeternity/aepp-calldata@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@aeternity/aepp-calldata@npm:1.6.0"
+  dependencies:
+    blakejs: ^1.2.1
+    bs58: ^5.0.0
+    rlp: ^3.0.0
+    safe-buffer: ^5.2.1
+    sha.js: ^2.4.11
+  checksum: 9f176b4b640de856becc8665ad6075d6e4be19cad8b19ad99222dbf186d4def1005f5af0a05ddd6a8e30b0afe42e12165436d27f383348781195226b40e2ee93
+  languageName: node
+  linkType: hard
 
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.2.1

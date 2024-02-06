@@ -10,16 +10,19 @@ class AeSnap {
 
   private aeSdk: AeSdk;
 
+  private networkId: NetworkId;
+
   private constructor(
-    networkId: NetworkId,
+    network_id: NetworkId,
     options?: { id: string; provider?: AeSnapProvider },
   ) {
     this.provider = options?.provider ?? new AeSnapProvider();
     this.id = options?.id ?? "npm:@aeternity-snap/plugin";
+    this.networkId = network_id;
 
-    const node = new Node(getNetworkRpcUrl(networkId));
+    const node = new Node(getNetworkRpcUrl(network_id));
     this.aeSdk = new AeSdk({
-      nodes: [{ name: networks[networkId].name, instance: node }],
+      nodes: [{ name: networks[network_id].name, instance: node }],
       accounts: [],
     });
   }
@@ -85,7 +88,7 @@ class AeSnap {
         await this.provider.invokeSnap(this.id, "signTransaction", {
           derivationPath: [`0'`, `0'`, `0'`],
           tx,
-          networkId: networks[NetworkId.testnet].id,
+          networkId: networks[this.networkId].id,
         });
 
       if (!response?.signedTx) {

@@ -23,6 +23,7 @@
     "start": "mm-snap build && mm-snap serve"
   },
   "dependencies": {
+    "@aeternity/aepp-calldata": "^1.6.0",
     "@azure/core-client": "^1.7.3",
     "@babel/runtime": "^7.21.5",
     "@metamask/key-tree": "^7.0.0",

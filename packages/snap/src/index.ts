@@ -3,7 +3,9 @@ import { deriveKeyPair } from "./privateKey";
 import {
   renderGetPublicKey,
   renderSignMessage,
-  renderSignTransaction,
+  renderSignContractTx,
+  renderSpendTx,
+  renderSignTx,
 } from "./ui";
 import {
   assertConfirmation,
@@ -16,6 +18,8 @@ import {
   signTransaction,
 } from "./utils";
 import { verifyMessage } from "./utils/crypto";
+import { unpackTx } from "./tx/builder";
+import { getContractCallDetails, getSpendTxDetails } from "./contract/helper";
 
 module.exports.onRpcRequest = async ({ origin, request }: any) => {
   if (!origin) {
@@ -80,8 +84,26 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
     case "signTransaction": {
       const { derivationPath, tx, networkId, isInnerTx } = request.params || {};
 
-      const accepted = await renderSignTransaction(dappHost, tx);
-      assertConfirmation(accepted);
+      const unpackedTx = unpackTx(tx);
+
+      if (
+        unpackedTx.tag === 11 &&
+        unpackedTx.encodedTx &&
+        (unpackedTx.encodedTx.tag === 42 || unpackedTx.encodedTx.tag === 43)
+      ) {
+        assertConfirmation(
+          renderSignContractTx(
+            dappHost,
+            await getContractCallDetails(unpackedTx.encodedTx, networkId),
+          ),
+        );
+      } else if (unpackedTx.tag === 12) {
+        assertConfirmation(
+          renderSpendTx(dappHost, await getSpendTxDetails(unpackedTx)),
+        );
+      } else {
+        assertConfirmation(renderSignTx(dappHost, tx));
+      }
 
       const keyPair = await deriveKeyPair(derivationPath);
       const options = { privateKey: keyPair.secretKey };

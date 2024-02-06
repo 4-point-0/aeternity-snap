@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@aeternity/aepp-sdk": "^13.2.2",
-    "@metamask/providers": "^13.1.0"
+    "@metamask/providers": "^13.1.0",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "@aeternity/aepp-sdk": "^13.2.2"
