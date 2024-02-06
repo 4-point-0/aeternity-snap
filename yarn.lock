@@ -16,6 +16,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aeternity-snap/plugin@workspace:packages/snap"
   dependencies:
+    "@aeternity/aepp-calldata": ^1.6.0
     "@azure/core-client": ^1.7.3
     "@babel/runtime": ^7.21.5
     "@metamask/key-tree": ^7.0.0
@@ -35,12 +36,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aeternity-snap/sdk@^0.0.1, @aeternity-snap/sdk@workspace:packages/sdk":
+"@aeternity-snap/sdk@^0.0.2, @aeternity-snap/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@aeternity-snap/sdk@workspace:packages/sdk"
   dependencies:
     "@aeternity/aepp-sdk": ^13.2.2
     "@metamask/providers": ^13.1.0
+    typescript: ^5.3.3
   peerDependencies:
     "@aeternity/aepp-sdk": ^13.2.2
   languageName: unknown
@@ -56,6 +58,19 @@ __metadata:
     safe-buffer: ^5.2.1
     sha.js: ^2.4.11
   checksum: 953897182db65f2a39162d473e7a2ad88e866c3f34976bb6f7095650eebd8474ee90a8bcfa8608e702ddc01c33429c70068b70ca6d15b8232bababfc188f87dc
+  languageName: node
+  linkType: hard
+
+"@aeternity/aepp-calldata@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@aeternity/aepp-calldata@npm:1.6.0"
+  dependencies:
+    blakejs: ^1.2.1
+    bs58: ^5.0.0
+    rlp: ^3.0.0
+    safe-buffer: ^5.2.1
+    sha.js: ^2.4.11
+  checksum: 9f176b4b640de856becc8665ad6075d6e4be19cad8b19ad99222dbf186d4def1005f5af0a05ddd6a8e30b0afe42e12165436d27f383348781195226b40e2ee93
   languageName: node
   linkType: hard
 
@@ -3689,6 +3704,26 @@ __metadata:
   peerDependencies:
     tailwindcss: "*"
   checksum: cf58e10afe9113c33769d43751148dc567179e50d33354547833fda42416191a0481a758dc2abbff1fe01f14c3c9b79a002a6e2e4552c48b458db41a3a130d3b
+  languageName: node
+  linkType: hard
+
+"@nextui-org/theme@npm:^2.1.17":
+  version: 2.1.17
+  resolution: "@nextui-org/theme@npm:2.1.17"
+  dependencies:
+    color: ^4.2.3
+    color2k: ^2.0.2
+    deepmerge: 4.3.1
+    flat: ^5.0.2
+    lodash.foreach: ^4.5.0
+    lodash.get: ^4.4.2
+    lodash.kebabcase: ^4.1.1
+    lodash.mapkeys: ^4.6.0
+    lodash.omit: ^4.5.0
+    tailwind-variants: ^0.1.18
+  peerDependencies:
+    tailwindcss: "*"
+  checksum: 6651943f5da0c44312e02767582e66458b503ac277ebfd9c32e8a7d1c19189e1e527f574d03cf35ba9d87e123bdf6dcd453802c92d159103632e881b892655f7
   languageName: node
   linkType: hard
 
@@ -8689,7 +8724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.1":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.1":
   version: 3.3.1
   resolution: "fast-glob@npm:3.3.1"
   dependencies:
@@ -8844,9 +8879,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^10.16.2":
-  version: 10.16.4
-  resolution: "framer-motion@npm:10.16.4"
+"framer-motion@npm:^10.16.8":
+  version: 10.18.0
+  resolution: "framer-motion@npm:10.18.0"
   dependencies:
     "@emotion/is-prop-valid": ^0.8.2
     tslib: ^2.4.0
@@ -8861,7 +8896,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 57eb252f25a2c4ee14b024295c6a1162a53a05e0321bdb9c8a22ec266fbe777832823eaa0309e42854170fcde16c42915c6c5d0208b628fd000d6fab013c501f
+  checksum: b43f1edcfc8c2226e3325517612d2abb7455455c4d2232d62499d70a603a51ffdd6a810aa7b5e783a25860856ec6c6e5b3bcf749846facedc54a063f9a548f0b
   languageName: node
   linkType: hard
 
@@ -9985,7 +10020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.18.2, jiti@npm:^1.19.1":
+"jiti@npm:^1.19.1":
   version: 1.21.0
   resolution: "jiti@npm:1.21.0"
   bin:
@@ -12340,7 +12375,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site@workspace:packages/site"
   dependencies:
-    "@aeternity-snap/sdk": ^0.0.1
+    "@aeternity-snap/sdk": ^0.0.2
     "@aeternity/aepp-sdk": ^13.2.2
     "@nextui-org/button": 2.0.18
     "@nextui-org/code": 2.0.16
@@ -12352,7 +12387,7 @@ __metadata:
     "@nextui-org/snippet": 2.0.22
     "@nextui-org/switch": 2.0.18
     "@nextui-org/system": 2.0.7
-    "@nextui-org/theme": 2.1.6
+    "@nextui-org/theme": ^2.1.17
     "@phosphor-icons/react": ^2.0.13
     "@react-aria/ssr": ^3.7.1
     "@react-aria/visually-hidden": ^3.8.3
@@ -12363,7 +12398,7 @@ __metadata:
     clsx: ^2.0.0
     eslint: 8.48.0
     eslint-config-next: 13.4.19
-    framer-motion: ^10.16.2
+    framer-motion: ^10.16.8
     intl-messageformat: ^10.5.0
     lodash: ^4.17.21
     next: ^13.5.6
@@ -12376,8 +12411,8 @@ __metadata:
     react-dom: ^18.2.0
     react-icons: ^4.11.0
     react-toastify: ^9.1.3
-    tailwind-variants: ^0.1.13
-    tailwindcss: 3.3.3
+    tailwind-variants: ^0.1.18
+    tailwindcss: ^3.3.5
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -12833,7 +12868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-variants@npm:^0.1.13, tailwind-variants@npm:^0.1.14, tailwind-variants@npm:^0.1.18":
+"tailwind-variants@npm:^0.1.14, tailwind-variants@npm:^0.1.18":
   version: 0.1.18
   resolution: "tailwind-variants@npm:0.1.18"
   dependencies:
@@ -12841,39 +12876,6 @@ __metadata:
   peerDependencies:
     tailwindcss: "*"
   checksum: 417f1673c47ff1e231248a726eadf6d934a8ba85b01692f083c682a7be8d276de52a22169025cfaaf1d382dcabc7170b98bd8d9fd6b9007eec6f9ab869aca2e4
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:3.3.3":
-  version: 3.3.3
-  resolution: "tailwindcss@npm:3.3.3"
-  dependencies:
-    "@alloc/quick-lru": ^5.2.0
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.2.12
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    jiti: ^1.18.2
-    lilconfig: ^2.1.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.23
-    postcss-import: ^15.1.0
-    postcss-js: ^4.0.1
-    postcss-load-config: ^4.0.1
-    postcss-nested: ^6.0.1
-    postcss-selector-parser: ^6.0.11
-    resolve: ^1.22.2
-    sucrase: ^3.32.0
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: 0195c7a3ebb0de5e391d2a883d777c78a4749f0c532d204ee8aea9129f2ed8e701d8c0c276aa5f7338d07176a3c2a7682c1d0ab9c8a6c2abe6d9325c2954eb50
   languageName: node
   linkType: hard
 
@@ -12907,6 +12909,39 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: e04bb3bb7f9f17e9b6db0c7ace755ef0d6d05bff36ebeb9e5006e13c018ed5566f09db30a1a34380e38fa93ebbb4ae0e28fe726879d5e9ddd8c5b52bffd26f14
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:^3.3.5":
+  version: 3.4.1
+  resolution: "tailwindcss@npm:3.4.1"
+  dependencies:
+    "@alloc/quick-lru": ^5.2.0
+    arg: ^5.0.2
+    chokidar: ^3.5.3
+    didyoumean: ^1.2.2
+    dlv: ^1.1.3
+    fast-glob: ^3.3.0
+    glob-parent: ^6.0.2
+    is-glob: ^4.0.3
+    jiti: ^1.19.1
+    lilconfig: ^2.1.0
+    micromatch: ^4.0.5
+    normalize-path: ^3.0.0
+    object-hash: ^3.0.0
+    picocolors: ^1.0.0
+    postcss: ^8.4.23
+    postcss-import: ^15.1.0
+    postcss-js: ^4.0.1
+    postcss-load-config: ^4.0.1
+    postcss-nested: ^6.0.1
+    postcss-selector-parser: ^6.0.11
+    resolve: ^1.22.2
+    sucrase: ^3.32.0
+  bin:
+    tailwind: lib/cli.js
+    tailwindcss: lib/cli.js
+  checksum: ef5a587dd32bb4e91e1549ead6162f85f0b78d3e6ffd8b4e8eeb15585b7b886cb3af6ae9df5092ed8ccb7e590608d1b3eec79ca08c862b07cd9ff7e72f73104b
   languageName: node
   linkType: hard
 
@@ -13246,6 +13281,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 2007ccb6e51bbbf6fde0a78099efe04dc1c3dfbdff04ca3b6a8bc717991862b39fd6126c0c3ebf2d2d98ac5e960bcaa873826bb2bb241f14277034148f41f6a2
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
   resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
@@ -13263,6 +13308,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=14eedb"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: f61375590b3162599f0f0d5b8737877ac0a7bc52761dbb585d67e7b8753a3a4c42d9a554c4cc929f591ffcf3a2b0602f65ae3ce74714fd5652623a816862b610
   languageName: node
   linkType: hard
 
