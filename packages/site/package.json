@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
-    "@aeternity-snap/sdk": "^0.0.2",
+    "@aeternity-snap/sdk": "^0.0.4",
     "@aeternity/aepp-sdk": "^13.2.2",
     "@nextui-org/button": "2.0.18",
     "@nextui-org/code": "2.0.16",

@@ -142,7 +142,7 @@ export const getSpendTxDetails = async (
     return {
       senderId,
       recipientId,
-      amount: amount?.toString(),
+      amount: (Number(amount?.toString()) / 10 ** 18).toString(),
       fee: formatAmount(fee || 0, {
         denomination: AE_AMOUNT_FORMATS.AETTOS,
         targetDenomination: AE_AMOUNT_FORMATS.AE,

@@ -12,15 +12,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aeternity-snap/sdk@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@aeternity-snap/sdk@npm:0.0.1"
+"@aeternity-snap/sdk@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@aeternity-snap/sdk@npm:0.0.4"
   dependencies:
     "@aeternity/aepp-sdk": ^13.2.2
     "@metamask/providers": ^13.1.0
   peerDependencies:
     "@aeternity/aepp-sdk": ^13.2.2
-  checksum: a3cfa478922826047c6e9211d56b70bf720897c11b08629d3a4243045c043398992722775ad4aec88008d499fbea016eebcf53ef7bcfd91ad680a404421c125d
+  checksum: 10f9974cbc8b0241f54f763bd06cd6b2a5f06c8f6ac5fa905f12361a1468c247294928239f4c6d49ba0f270daa82b7219b88471758e47b3ea52e75c83f540404
   languageName: node
   linkType: hard
 
@@ -7737,7 +7737,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site@workspace:."
   dependencies:
-    "@aeternity-snap/sdk": ^0.0.1
+    "@aeternity-snap/sdk": ^0.0.4
     "@aeternity/aepp-sdk": ^13.2.2
     "@nextui-org/button": 2.0.18
     "@nextui-org/code": 2.0.16
