@@ -10,7 +10,6 @@ import {
 import {
   assertConfirmation,
   assertInput,
-  assertIsBoolean,
   assertIsString,
   assertIsVerifiedMessage,
   encodePublicKey,
@@ -30,19 +29,19 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
 
   switch (request.method) {
     case "getPublicKey": {
-      const { derivationPath, confirm = false } = request.params || {};
-
-      assertIsBoolean(confirm);
+      const { derivationPath } = request.params || {};
 
       const keyPair = await deriveKeyPair(derivationPath);
       const publicKey = encodePublicKey(keyPair.publicKey);
 
-      if (confirm) {
-        const accepted = await renderGetPublicKey(
-          dappHost,
-          "Are you sure you want to get account address?",
-        );
-        assertConfirmation(accepted);
+      const accepted = await renderGetPublicKey(
+        dappHost,
+        "Are you sure you want to get account address?",
+      );
+      assertConfirmation(accepted);
+
+      if (!accepted) {
+        return null;
       }
 
       return { publicKey };
@@ -91,20 +90,30 @@ module.exports.onRpcRequest = async ({ origin, request }: any) => {
         unpackedTx.encodedTx &&
         (unpackedTx.encodedTx.tag === 42 || unpackedTx.encodedTx.tag === 43)
       ) {
-        assertConfirmation(
-          renderSignContractTx(
-            dappHost,
-            await getContractCallDetails(unpackedTx.encodedTx, networkId),
-          ),
+        const details = await getContractCallDetails(
+          unpackedTx.encodedTx,
+          networkId,
         );
+        const confirmed = await renderSignContractTx(dappHost, details);
+        assertConfirmation(confirmed);
+        if (!confirmed) {
+          return null;
+        }
       } else if (unpackedTx.tag === 12) {
-        assertConfirmation(
-          renderSpendTx(dappHost, await getSpendTxDetails(unpackedTx)),
-        );
+        const details = await getSpendTxDetails(unpackedTx);
+        const confirmed = await renderSpendTx(dappHost, details);
+        assertConfirmation(confirmed);
+        if (!confirmed) {
+          return null;
+        }
       } else {
-        assertConfirmation(renderSignTx(dappHost, tx));
-      }
+        const confirmed = await renderSignTx(dappHost, tx);
+        assertConfirmation(confirmed);
 
+        if (!confirmed) {
+          return null;
+        }
+      }
       const keyPair = await deriveKeyPair(derivationPath);
       const options = { privateKey: keyPair.secretKey };
       const signedTx = signTransaction(tx, {
