@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@aeternity-snap/sdk": "^0.0.4",
+    "@aeternity-snap/sdk": "^0.0.5",
     "@aeternity/aepp-sdk": "^13.2.2",
     "@nextui-org/button": "2.0.18",
     "@nextui-org/code": "2.0.16",
@@ -38,7 +38,7 @@
     "next": "^13.5.6",
     "next-themes": "^0.2.1",
     "nextjs-node-loader": "^1.1.5-alpha.0",
-    "postcss": "8.4.29",
+    "postcss": "8.4.37",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
