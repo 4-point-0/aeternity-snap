@@ -67,7 +67,7 @@ The `@aeternity-snap/plugin` itself does not have internet access. The plugin on
 
 ### 🔒 Safe and secure.
 
-**The plugin does not have access to the Internet**, and also **does not return the private key** of your aeternity account to a third-party application.
+**The plugin does not return the private key** of your aeternity account to a third-party application.
 
 ### 👀 Full transparency
 
