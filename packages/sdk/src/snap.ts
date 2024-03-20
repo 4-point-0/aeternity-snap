@@ -63,12 +63,9 @@ class AeSnap {
     await this.provider.connectSnap(this.id);
   }
 
-  async getPublicKey(
-    shouldUserConfirm = false,
-  ): Promise<Maybe<{ publicKey: string }>> {
+  async getPublicKey(): Promise<Maybe<{ publicKey: string }>> {
     return await this.provider.invokeSnap(this.id, "getPublicKey", {
       derivationPath: [`0'`, `0'`, `0'`],
-      confirm: shouldUserConfirm,
     });
   }
 
