@@ -219,22 +219,26 @@ const Dashboard = () => {
       return;
     }
 
-    const txHash = await signAndSendTransaction({
-      tag: Tag.SpendTx,
-      senderId: address,
-      recipientId: recipient,
-      amount: amountNum * 10 ** 18,
-      payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
-    } as TxParamsAsync);
+    try {
+      const txHash = await signAndSendTransaction({
+        tag: Tag.SpendTx,
+        senderId: address,
+        recipientId: recipient,
+        amount: amountNum * 10 ** 18,
+        payload: encode(new TextEncoder().encode(""), Encoding.Bytearray),
+      } as TxParamsAsync);
 
-    toast.success(
-      CustomToastWithLink(
-        currentOperationalNetwork === "testnet"
-          ? `https://${currentOperationalNetwork}.aescan.io/transactions/${txHash}`
-          : `https://aescan.io/transactions/${txHash}`,
-        "Trasanction has been sent successfully",
-      ),
-    );
+      toast.success(
+        CustomToastWithLink(
+          currentOperationalNetwork === "testnet"
+            ? `https://${currentOperationalNetwork}.aescan.io/transactions/${txHash}`
+            : `https://aescan.io/transactions/${txHash}`,
+          "Trasanction has been sent successfully",
+        ),
+      );
+    } catch {
+      toast.error("Transaction was not executed.");
+    }
 
     onClose();
 
