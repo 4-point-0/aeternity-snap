@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@aeternity-snap/sdk": "^0.0.6",
+    "@aeternity-snap/sdk": "^0.0.5",
     "@aeternity/aepp-sdk": "^13.2.2",
     "@nextui-org/button": "2.0.18",
     "@nextui-org/code": "2.0.16",
