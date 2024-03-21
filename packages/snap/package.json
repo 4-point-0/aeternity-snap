@@ -1,6 +1,6 @@
 {
   "name": "@aeternity-snap/plugin",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Aeternity metamask snap.",
   "homepage": "https://github.com/4-point-0/aeternity-snap",
   "bugs": "https://github.com/4-point-0/aeternity-snap/issues",
