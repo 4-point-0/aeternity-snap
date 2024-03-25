@@ -28,9 +28,9 @@ export const MetamaskProvider = ({ children }: any) => {
   }, [currentOperationalNetwork]);
 
   const getNetwork = () => {
-    if (currentOperationalNetwork === "testnet") {
+    if (currentOperationalNetwork.toLowerCase() === "testnet") {
       return NetworkId.testnet;
-    } else if (currentOperationalNetwork === "mainnet") {
+    } else if (currentOperationalNetwork.toLowerCase() === "mainnet") {
       return NetworkId.mainnet;
     }
 

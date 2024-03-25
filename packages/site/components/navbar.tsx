@@ -21,7 +21,7 @@ import {
   Snippet,
 } from "@nextui-org/react";
 import { useTheme } from "next-themes";
-import React from "react";
+import React, { useEffect } from "react";
 import { ThemeSwitch } from "./theme-switch";
 
 import { shortenAddress } from "@/lib/utils";
@@ -38,12 +38,16 @@ export const NavigationBar = () => {
   const { theme } = useTheme();
   const { changeOperationalNetwork } = useMetamask();
 
-  const [selectedKeys, setSelectedKeys] = useState<any>(new Set(["Testnet"]));
+  const [selectedKeys, setSelectedKeys] = useState<any>(new Set(["testnet"]));
 
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys],
   );
+
+  useEffect(() => {
+    changeOperationalNetwork(selectedValue.toLowerCase());
+  }, [selectedValue]);
 
   return (
     <Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -119,13 +123,7 @@ export const NavigationBar = () => {
           {address && (
             <Dropdown>
               <DropdownTrigger>
-                <Button
-                  variant="solid"
-                  className="capitalize"
-                  onPress={() =>
-                    changeOperationalNetwork(selectedValue.toLowerCase())
-                  }
-                >
+                <Button variant="solid" className="capitalize">
                   {selectedValue} <MdKeyboardArrowDown />
                 </Button>
               </DropdownTrigger>
