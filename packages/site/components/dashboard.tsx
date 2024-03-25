@@ -62,6 +62,7 @@ const Dashboard = () => {
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
   const [isValidVerifyAddress, setIsValidVerifyAddress] =
     useState<boolean>(true);
+  const [isVerifyingAddress, setIsVerifiyingAddress] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +82,7 @@ const Dashboard = () => {
 
   const checkWallet = async (address: string) => {
     try {
+      setIsVerifiyingAddress(true);
       const response = await fetchWalletInfo(address);
 
       if (!response.ok) {
@@ -92,6 +94,8 @@ const Dashboard = () => {
       }
     } catch (err) {
       setIsValidWalletId(false);
+    } finally {
+      setIsVerifiyingAddress(false);
     }
   };
 
@@ -101,7 +105,7 @@ const Dashboard = () => {
     );
   };
 
-  const debounceHandleSearch = useCallback(debounce(checkWallet, 2000), []);
+  const debounceHandleSearch = useCallback(debounce(checkWallet, 500), []);
 
   const handelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const address = e.target.value;
@@ -250,9 +254,13 @@ const Dashboard = () => {
 
   const handleSignMessage = async () => {
     const encodedMsg = btoa(message);
-    const { signature } = await signMessage(encodedMsg);
-    setMessageSignature(signature);
-    toast.success(`The message has been signed: ${signature}`);
+    try {
+      const { signature } = await signMessage(encodedMsg);
+      setMessageSignature(signature);
+      toast.success(`The message has been signed: ${signature}`);
+    } catch {
+      toast.error("Transaction was not executed.");
+    }
   };
 
   const handleVerifyMessage = async () => {
@@ -621,6 +629,7 @@ const Dashboard = () => {
                   variant="flat"
                   onPress={onSend}
                   isDisabled={!isValidWalletId}
+                  isLoading={isVerifyingAddress}
                 >
                   Send
                 </Button>
