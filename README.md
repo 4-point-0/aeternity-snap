@@ -44,10 +44,6 @@ The `@aeternity-snap/plugin` itself does not have internet access. The plugin on
 - Sign transaction
 - Sign message
 
-### 🔒 Safe and secure.
-
-**The plugin does not have access to the Internet**, and also **does not return the private key** of your aeternity account to a third-party application.
-
 ### 👀 Full transparency
 
 Thanks to the preview of incoming transactions, you know exactly what you are signing. Without your consent, **no third party application will receive your public key.**
