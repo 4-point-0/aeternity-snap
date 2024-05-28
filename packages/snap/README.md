@@ -1,5 +1,35 @@
 # Aeternity Protocol Snap
 
+# FAQ
+
+### What is the Aeternity Wallet Snap?
+
+The Aeternity Wallet Snap is a MetaMask extension that enables secure account management and transaction signing for the Aeternity blockchain.
+
+### How do I install the Aeternity Wallet Snap?
+
+You can install the Snap by adding it via MetaMask settings and running it locally. For detailed instructions, refer to the Installation section of this README.
+
+### Is the Aeternity Wallet Snap secure?
+
+Yes, the Snap ensures that your private key never leaves the plugin, and it provides a transparent preview of transactions before you sign them.
+
+### Where can I find the demo?
+
+You can access the demo for testnet/mainnet at [Aeternity Snap Demo](https://aeternity-snap.vercel.io).
+
+### How do I contribute to the project?
+
+Contributions are welcome! Please open an issue or submit a pull request with any improvements.
+
+### Where can I find the npm package?
+
+The npm package can be installed using:
+
+```bash
+npm install @aeternity-snap/plugin
+```
+
 **Manage account and sign transactions for Aeternity Protocol blockchain.**
 The Aeternity Wallet Snap is a MetaMask extension that has Aeternity capabilities such as public key derivation, transaction signing, message signing.
 
