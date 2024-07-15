@@ -16,7 +16,6 @@ import {
 
 export const fetchJson = async (url: string): Promise<any> => {
   const response = await fetch(url);
-  console.log("response", response);
   if (response.status === 204) {
     return null;
   }
@@ -102,6 +101,7 @@ export const getContractCallDetails = async (
       fee,
       contractId,
       nonce,
+      amount,
     }: TxContractCallEncodedDto = encodedTx as TxContractCallEncodedDto;
 
     const txParams = await getContractCallInfo(networkId, callData, contractId);
@@ -113,6 +113,8 @@ export const getContractCallDetails = async (
         denomination: AE_AMOUNT_FORMATS.AETTOS,
         targetDenomination: AE_AMOUNT_FORMATS.AE,
       }),
+
+      amount: (Number(amount?.toString()) / 10 ** 18).toString(),
       feeInUsd: feeInUsd < 0.01 ? "< $0.01" : feeInUsd.toFixed(2),
       function: txParams?.function,
       args: txParams?.arguments,
