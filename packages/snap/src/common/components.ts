@@ -17,6 +17,7 @@ export const contactCallPanel = (args?: any) => {
     divider(),
     labelPanel({ label: "Address from", value: args.callerId }),
     labelPanel({ label: "Address to", value: args.contractId }),
+    labelPanel({ label: "Amount", value: args.amount }),
     labelPanel({
       label: "Fee",
       value: args.fee ? `**${args.fee} AE** ${args.feeInUsd}` : undefined,
@@ -27,6 +28,7 @@ export const contactCallPanel = (args?: any) => {
 
 export const contractTxPanel = (dto?: TxContractCallDto) => {
   const { args, callData, contractId, nonce } = dto || {};
+
   return panel([
     divider(),
     text("Transaction details"),
@@ -34,7 +36,16 @@ export const contractTxPanel = (dto?: TxContractCallDto) => {
     labelPanel({ label: "Function name", value: dto?.function }),
     labelPanel({
       label: "Arguments",
-      value: args ? args.map((arg) => arg.value).join(",") : undefined,
+      value: args
+        ? args
+            .map((arg) => {
+              return typeof arg.value === "string" ||
+                arg.value instanceof String
+                ? arg.value.replace("/n", "")
+                : arg.value;
+            })
+            .join(",")
+        : undefined,
     }),
     labelPanel({ label: "Call data", value: callData }),
     labelPanel({ label: "Contract ID", value: contractId }),
