@@ -9,6 +9,7 @@ export type TextPanel = {
 export type TxContractCallDto = {
   callerId?: string;
   fee?: string;
+  amount?: string;
   feeInUsd?: string;
   function?: string;
   args?: TxArguments[];
@@ -32,6 +33,7 @@ export type TxSpendDto = {
 
 export type TxContractCallEncodedDto = {
   callerId?: string;
+  amount?: string;
   fee?: string;
   callData?: string;
   contractId?: string;
