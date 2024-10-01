@@ -19,7 +19,7 @@ const MetamaskContext = React.createContext<MetamaskContext | null>(null);
 export const MetamaskProvider = ({ children }: any) => {
   const [address, setAddress] = useState<string | null>(null);
   const [currentOperationalNetwork, setCurrentOperationalNetwork] =
-    useState<string>("testnet");
+    useState<string>("mainnet");
 
   const [aeSnap, setAeSnap] = useState<AESnap | null>(null);
 
