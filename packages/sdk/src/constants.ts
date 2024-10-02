@@ -1,62 +1,27 @@
 export enum NetworkId {
-  mainnet = "mainnet",
-  testnet = "testnet",
+  mainnet = "ae_mainnet",
+  testnet = "ae_uat",
 }
 
-type Network = {
-  id: string;
-  name: string;
-  rpcUrl: string;
-};
-
-export const networks: { [key: string]: Network } = {
+export const networks = {
   [NetworkId.mainnet]: {
-    id: "ae_mainnet",
+    id: NetworkId.mainnet,
     name: "mainnet",
     rpcUrl: "https://mainnet.aeternity.io",
   },
   [NetworkId.testnet]: {
-    id: "ae_uat",
+    id: NetworkId.testnet,
     name: "testnet",
     rpcUrl: "https://testnet.aeternity.io",
   },
+} as const;
+
+export const getNetworkRpcUrl = (networkId: NetworkId = NetworkId.testnet): string => {
+  return networks[networkId].rpcUrl;
 };
 
-export const getNetworkRpcUrl = (networkId: string): string => {
-  switch (networkId) {
-    case "mainnet":
-      return networks[NetworkId.mainnet].rpcUrl;
-
-    case "testnet":
-      return networks[NetworkId.testnet].rpcUrl;
-
-    default:
-      return networks[NetworkId.testnet].rpcUrl;
-  }
+export const getNetworkName = (networkId: NetworkId = NetworkId.testnet): string => {
+  return networks[networkId].name;
 };
 
-export const getNetworkName = (networkId: string): string => {
-  switch (networkId) {
-    case "mainnet":
-      return networks[NetworkId.mainnet].name;
-
-    case "testnet":
-      return networks[NetworkId.testnet].name;
-
-    default:
-      return networks[NetworkId.testnet].name;
-  }
-};
-
-export const getNetworkId = (networkId: string): string => {
-  switch (networkId) {
-    case "mainnet":
-      return networks[NetworkId.mainnet].id;
-
-    case "testnet":
-      return networks[NetworkId.testnet].id;
-
-    default:
-      return networks[NetworkId.testnet].id;
-  }
-};
+export const getNetworkId = (networkId: NetworkId = NetworkId.testnet): NetworkId => networkId;
