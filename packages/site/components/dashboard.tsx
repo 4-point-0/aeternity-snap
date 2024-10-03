@@ -62,7 +62,7 @@ const Dashboard = () => {
   const [isValidWalletId, setIsValidWalletId] = useState<boolean>(true);
   const [isValidVerifyAddress, setIsValidVerifyAddress] =
     useState<boolean>(true);
-  const [isVerifyingAddress, setIsVerifiyingAddress] = useState(false);
+  const [isVerifyingAddress, setIsVerifyingAddress] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -82,7 +82,7 @@ const Dashboard = () => {
 
   const checkWallet = async (address: string) => {
     try {
-      setIsVerifiyingAddress(true);
+      setIsVerifyingAddress(true);
       const response = await fetchWalletInfo(address);
 
       if (!response.ok) {
@@ -95,7 +95,7 @@ const Dashboard = () => {
     } catch (err) {
       setIsValidWalletId(false);
     } finally {
-      setIsVerifiyingAddress(false);
+      setIsVerifyingAddress(false);
     }
   };
 
@@ -237,7 +237,7 @@ const Dashboard = () => {
           currentOperationalNetwork === "testnet"
             ? `https://${currentOperationalNetwork}.aescan.io/transactions/${txHash}`
             : `https://aescan.io/transactions/${txHash}`,
-          "Trasanction has been sent successfully",
+          "Transaction has been sent successfully",
         ),
       );
     } catch {
@@ -514,7 +514,7 @@ const Dashboard = () => {
           <CardBody>
             <div className="flex">
               <p className="font-bold text-lg">
-                Activites ({activities.length})
+                Activities ({activities.length})
               </p>
               <a
                 href={

@@ -71,7 +71,7 @@ class AeSnap {
 
   async signMessage(
     message: string,
-  ): Promise<Maybe<{ publicKey: string; sigature: string }>> {
+  ): Promise<Maybe<{ publicKey: string; signature: string }>> {
     return await this.provider.invokeSnap(this.id, "signMessage", {
       derivationPath: [`0'`, `0'`, `0'`],
       message,
